@@ -2,48 +2,25 @@
 
 namespace SpeckOrder\Entity;
 
-use DateTime;
-use SpeckCart\Entity\LineItemInterface;
-
-interface OrderLineInterface extends LineItemInterface
+interface OrderLineInterface
 {
-    /**
-     * get orderid
-     *
-     * @return integer
-     */
     public function getOrderId();
 
-    /**
-     * set order id
-     *
-     * @param integer $order
-     * @return OrderLineInterface provides fluent interface
-     */
     public function setOrderId($orderId);
 
-    /**
-     *
-     * @return integer
-     */
-    public function getInvoicedQty();
+    public function getQuantityInvoiced();
 
-    public function setInvoicedQty($qty);
+    public function setQuantityInvoiced($quantityInvoiced);
 
-    public function getRefundedQty();
+    public function getQuantityRefunded();
 
-    public function setRefundedQty($qty);
+    public function setQuantityRefunded($quantityRefunded);
 
-    public function getShippedQty();
+    public function getQuantityShipped();
 
-    public function setShippedQty($qty);
+    public function setQuantityShipped($quantityShipped);
 
-    public function getIsInvoiceable();
+    public function isInvoiceable();
 
-    /**
-     *
-     * @param bool $flag
-     * @return OrderLineInterface
-     */
-    public function setIsInvoiceable($flag);
+    public function setInvoiceable($invoiceable);
 }

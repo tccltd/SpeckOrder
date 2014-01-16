@@ -10,7 +10,10 @@ class Address extends BaseAddress
     protected $middleName;
     protected $lastName;
     protected $company;
-    protected $streetAddress2;
+    protected $line2;
+    protected $line3;
+    protected $line4;
+    protected $line5;
     protected $phone;
 
     public function getFirstName()
@@ -57,20 +60,53 @@ class Address extends BaseAddress
         return $this;
     }
 
-    public function getStreetAddress2()
+    public function getLine2()
     {
-        return $this->streetAddress2;
+        return $this->line2;
     }
 
-    public function setStreetAddress2($streetAddress)
+    public function setLine2($line2)
     {
-        $this->streetAddress2 = $streetAddress;
+        $this->line2 = $line2;
+        return $this;
+    }
+
+    public function getLine3()
+    {
+        return $this->line3;
+    }
+
+    public function setLine3($line3)
+    {
+        $this->line3 = $line3;
+        return $this;
+    }
+
+    public function getLine4()
+    {
+        return $this->line4;
+    }
+
+    public function setLine4($line4)
+    {
+        $this->line4 = $line4;
+        return $this;
+    }
+
+    public function getLine5()
+    {
+        return $this->line5;
+    }
+
+    public function setLine5($line5)
+    {
+        $this->line5 = $line5;
         return $this;
     }
 
     public function getPhone()
     {
-        return $this->public;
+        return $this->phone;
     }
 
     public function setPhone($phone)

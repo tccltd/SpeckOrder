@@ -3,13 +3,14 @@
 namespace SpeckOrder\Entity;
 
 use DateTime;
-use SpeckCart\Entity\LineItemCollectionInterface;
+use SpeckOrder\Entity\ItemCollectionInterface;
+use SpeckAddress\Entity\AddressInterface;
 
-interface OrderInterface extends LineItemCollectionInterface
+interface OrderInterface extends ItemCollectionInterface
 {
-    public function getOrderId();
+    public function getId();
 
-    public function setOrderId($id);
+    public function setId($id);
 
     /**
      * Order reference number
@@ -84,22 +85,22 @@ interface OrderInterface extends LineItemCollectionInterface
      *
      * @return DateTime
      */
-    public function getCreatedTime();
+    public function getCreated();
 
     /**
      *
      * @param DateTime $date
      * @return self
      */
-    public function setCreatedTime(DateTime $date);
+    public function setCreated(DateTime $date);
 
     public function getBillingAddress();
 
-    public function setBillingAddress(Address $address);
+    public function setBillingAddress(AddressInterface $address);
 
     public function getShippingAddress();
 
-    public function setShippingAddress(Address $address);
+    public function setShippingAddress(AddressInterface $address);
 
     public function getQuoteId();
 

@@ -25,11 +25,19 @@
         "zendframework/zendframework": "2.*",
         "zf-commons/zfc-base": "0.1.*",
         "speckcommerce/speck-address": "dev-master",
-        "speckcommerce/speck-cart": "dev-master"
+        "speckcommerce/speck-cart": "dev-master",
+        "tccltd/tcc-abstract-module": "0.*",
+        "tccltd/speck-checkout-order": "dev-master"
     },
     "require-dev": {
         "mockery/mockery": ">=0.7.2"
     },
+    "repositories" : [
+        {
+            "type": "vcs",
+            "url" : "https://github.com/tccltd/speckCheckoutOrder"
+        }
+    ],  
     "autoload": {
         "psr-0": {
             "SpeckOrder": "src/"

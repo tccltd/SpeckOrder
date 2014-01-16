@@ -4,33 +4,27 @@ namespace SpeckOrder\Mapper;
 
 use Zend\Db\Sql\Where;
 use ZfcBase\Mapper\AbstractDbMapper;
-use SpeckOrder\Entity\OrderAddress;
+use SpeckOrder\Entity\Address;
 
-class OrderAddressMapper extends AbstractDbMapper
+class AddressMapper extends AbstractDbMapper
 {
-    protected $tableName = 'order_order_address';
+    protected $tableName = 'order_address';
     protected $addressIdField = 'address_id';
 
-    public function persist(OrderAddress $orderAddress)
+    public function persist(Address $address)
     {
-        // TODO: How to handle inserting / updating.
-        $result = $this->insert($orderAddress);
-
-
-        /*
-        if($orderAddress->getAddressId() > 0) {
+        if($address->getAddressId() > 0) {
             $where = new Where;
             $where->equalTo($this->addressIdField, $address->getAddressId());
             $this->update($address, $where);
         } else {
             $result = $this->insert($address);
             $address->setAddressId($result->getGeneratedValue());
-        }*/
+        }
 
-        return $result;
+        return $address;
     }
 
-    /*
     public function findById($id)
     {
         $select = $this->getSelect();
@@ -40,5 +34,5 @@ class OrderAddressMapper extends AbstractDbMapper
 
         $resultSet = $this->select($select->where($where));
         return $resultSet->current();
-    }*/
+    }
 }

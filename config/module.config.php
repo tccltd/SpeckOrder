@@ -1,4 +1,5 @@
 <?php
+// TODO: Remove closures in config file as it kills caching. Check elsewhere too!
 
 $config = array(
     'controllers' => array(

@@ -3,31 +3,37 @@
 namespace SpeckOrder\Entity;
 
 use DateTime;
-use SpeckCart\Entity\LineItemCollectionTrait;
+use SpeckOrder\Entity\ItemCollectionTrait;
+use Zend\Stdlib\Hydrator\Filter\FilterProviderInterface;
+use Zend\Stdlib\Hydrator\Filter\FilterComposite;
+use Zend\Stdlib\Hydrator\Filter\MethodMatchFilter;
+use SpeckAddress\Entity\AddressInterface;
 
-class Order implements OrderInterface
+class Order implements OrderInterface, FilterProviderInterface
 {
-    use LineItemCollectionTrait;
+    use ItemCollectionTrait;
 
-    protected $orderId;
+    protected $id;
     protected $refNum;
     protected $status;
     protected $flags = array();
-    protected $createdTime;
+    protected $created;
     protected $billingAddress;
     protected $shippingAddress;
     protected $quoteId;
     protected $customerId;
     protected $currencyCode;
 
-    public function getOrderId()
+    protected $meta;
+
+    public function getId()
     {
-        return $this->orderId;
+        return $this->id;
     }
 
-    public function setOrderId($id)
+    public function setId($id)
     {
-        $this->orderId = $id;
+        $this->id = $id;
         return $this;
     }
 
@@ -91,9 +97,9 @@ class Order implements OrderInterface
      *
      * @return DateTime
      */
-    public function getCreatedTime()
+    public function getCreated()
     {
-        return $this->createdTime;
+        return $this->created;
     }
 
     /**
@@ -101,9 +107,15 @@ class Order implements OrderInterface
      * @param DateTime $date
      * @return self
      */
-    public function setCreatedTime(DateTime $date)
+    public function setCreated(DateTime $created)
     {
-        $this->createdTime = $date;
+        $this->created = $created;
+        return $this;
+    }
+
+    public function setCreatedNow()
+    {
+        $this->created = new DateTime();
         return $this;
     }
 
@@ -112,7 +124,7 @@ class Order implements OrderInterface
         return $this->billingAddress;
     }
 
-    public function setBillingAddress(Address $address)
+    public function setBillingAddress(AddressInterface $address)
     {
         $this->billingAddress = $address;
         return $this;
@@ -123,7 +135,7 @@ class Order implements OrderInterface
         return $this->shippingAddress;
     }
 
-    public function setShippingAddress(Address $address)
+    public function setShippingAddress(AddressInterface $address)
     {
         $this->shippingAddress = $address;
         return $this;
@@ -160,5 +172,41 @@ class Order implements OrderInterface
     {
         $this->currencyCode = $code;
         return $this;
+    }
+
+    public function getMeta()
+    {
+        return $this->meta;
+    }
+
+    public function setMeta( $meta)
+    {
+        $this->meta = $meta;
+
+        // Fluent interface.
+        return $this;
+    }
+
+    // TODO: Is this all the best way to do this - could it be drier?
+    public function getFilter()
+    {
+        $methods = array(
+            'id',
+            'refNum',
+            'status',
+            'created',
+            'quoteId',
+            'customerId',
+            'currencyCode',
+            'meta',
+        );
+
+        $filter = new FilterComposite();
+
+        foreach ($methods as $method) {
+            $filter->addFilter($method, new MethodMatchFilter('get' . ucfirst($method), false));
+            //$filter->addFilter($method, new MethodMatchFilter('set' . ucfirst($method), false));
+        }
+        return $filter;
     }
 }

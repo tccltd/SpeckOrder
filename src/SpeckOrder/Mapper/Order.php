@@ -8,19 +8,25 @@ use ZfcBase\Mapper\AbstractDbMapper;
 
 class Order extends AbstractDbMapper implements OrderInterface
 {
-    protected $orderIdField = 'order_id';
-    protected $tableName = 'order';
+    protected $idField = 'id';
+    protected $tableName = 'order_order';
 
     public function persist(OrderEntityInterface $order)
     {
-        if($order->getOrderId() > 0) {
-            $where = new Where;
-            $where->equalTo($this->orderIdField, $order->getOrderId());
+        if($order->getId() > 0) {
+            $where = new Where();
+            $where->equalTo($this->idField, $order->getId());
             $this->update($order, $where);
         } else {
             $result = $this->insert($order);
-            $order->setOrderId($result->getGeneratedValue());
+            $order->setId($result->getGeneratedValue());
         }
+
+
+        // Persist address links.
+
+
+
 
         return $order;
     }
@@ -30,7 +36,7 @@ class Order extends AbstractDbMapper implements OrderInterface
         $select = $this->getSelect();
 
         $where = new Where;
-        $where->equalTo($this->orderIdField, $id);
+        $where->equalTo($this->idField, $id);
 
         $resultSet = $this->select($select->where($where));
         return $resultSet->current();

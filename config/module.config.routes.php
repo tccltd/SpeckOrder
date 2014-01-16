@@ -9,12 +9,24 @@ return array(
                 ),
                 'may_terminate' => false,
                 'child_routes' => array(
-                    'process' => 'Literal',
-                    'options' => array(
-                        'route' => '/process',
-                        'defaults' => array(
-                            'controller' => 'order',
-                            'action'     => 'process',
+                    'receipt' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:id]',
+                            'defaults' => array(
+                                'controller' => 'speckorder_orderController',
+                                'action'     => 'receipt',
+                            ),
+                        ),
+                    ),
+                    'process' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/process',
+                            'defaults' => array(
+                                'controller' => 'speckorder_orderController',
+                                'action'     => 'store',
+                            ),
                         ),
                     ),
                 ),

@@ -1,0 +1,325 @@
+<?php 
+$linkBase = 'http://www.tcc-net.com';
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>Order Confirmation (<?= $order['meta']['customer']['firstName'] ?> <?= $order['meta']['customer']['lastName'] ?>)</title>
+</head>
+<body>
+<div style="display: none">
+    - Items Ordered: <?= $order['itemCount'] ?><br />
+    - Total Cost: <?= $this->currencyFormat($order['totalNet'], 'GBP'); ?><br />
+    ----------<br />
+</div>
+
+<?php
+// TODO: This could probably be implemented now we have order receipts on the site.
+/*
+<p style="text-align: center; font-size: 10px">
+    If you are having trouble viewing this email, please <a href="">click here</a> to view it in your browser.
+</p>
+*/
+?>
+
+<table align="center" style="text-align: justify; border-collapse: collapse; border: 1px solid #002C5A">
+<?php if (true): // !$excludeBlue ?>
+    <tr id="logoBar" style="background-color: #002C5A">
+        <td style="height: 110px; padding-left: 30px; padding-right: 30px; width:100%">
+            <a href="<?= $linkBase ?>/">
+                <img src="<?= $linkBase ?>/mailing/common/images/tcc-logo.gif" alt="TCC Logo" style="height: 50px; width: 216px; border: 0px" />
+            </a>
+        </td>
+        <td rowspan="2" style="width:214px; border-left: 2px solid #FFF; padding: 0px"><img src="<?= $linkBase ?>/mailing/common/images/header-image.jpg" alt="Photograph of Business People" style="height: 140px; width: 214px" /></td>
+    </tr>
+    <tr id="taglineBar">
+        <td style="height: 30px; width: 100%; padding: 0px; padding-left: 30px; padding-right: 30px; background-color: #b2c2d7">
+            <img src="<?= $linkBase ?>/mailing/common/images/sub-header.gif" alt="Providing Quality Training &amp; Consultancy for over 25 Years" style="height: 30px; width: 382px" />
+        </td>
+    </tr>
+<?php endif; ?>
+<?php if (false): // $includeWhite ?>
+    <tr id="whiteLogoBar">
+        <td style="padding: 10px; padding-bottom: 20px">
+            <img src="<?= $linkBase ?>/mailing/common/images/tcc-logo-white.gif" alt="TCC Logo" style="border: 0px" />
+        </td>
+    </tr>
+<?php endif; ?>
+    <tr>
+        <td colspan="2" style="width: 100%; padding: 10px; background-color: #FFF; vertical-align: top; font-family: Verdana; font-size: 11px">
+<?php if (false): // $advertsOff ?>
+            <table style="width: 200px; font-family: Verdana; font-size: 11px; color: #FFF; margin-left: 10px" align="right">
+                <tr>
+                    <td style="background-color: #798CB0; text-align: justify; padding: 10px">
+                        <div style="font-weight: bold; margin-bottom: 4px">*NEW* AGILE PROJECT<br />LEADERSHIP TRAINING</div>
+                        TCC are proud to be at the forefront of a new type of qualification,
+                        recognising skill in leading Agile Projects.<br />
+                        <br />
+                        In support of this qualification, TCC are happy to be able to offer
+                        Agile Project Leadership training, delivered by two of the foremost
+                        agile speakers in the industry.<br />
+                        <br />
+                        For your chance to be a part of this, simply click for<br />
+                        <div style="text-align: right; vertical-align: middle"><a href="<?= $linkBase ?>/agile-methods/training/agile-leadership/agile-project-leadership/"><img src="<?= $linkBase ?>/mailing/common/images/link.gif" alt="&gt;" style="border: 0px; height: 16px; width: 10px; vertical-align: middle" /></a>&nbsp;<a href="<?= $linkBase ?>/agile-methods/training/agile-leadership/agile-project-leadership/" style="color:#FFF; text-decoration:underline">more information</a></div>
+                    </td>
+                </tr>
+                <tr><td style="height: 10px"></td></tr>
+                <tr>
+                    <td style="background-color: #798CB0; text-align: justify; padding: 10px">
+                            <div style="font-weight: bold; margin-bottom: 4px">OUR SERVICES</div>
+                            <div style="vertical-align: middle"><a href="<?= $linkBase ?>/project-management/" style="color: white; text-decoration: none; vertical-align: middle"><img src="<?= $linkBase ?>/mailing/common/images/link.gif" alt="&gt;" style="border: 0px; height: 16px; width: 10px; vertical-align: middle" />&nbsp;Project Management</a></div>
+                            <a href="<?= $linkBase ?>/project-management/training/prince2/prince2-practitioner/" style="color: white; text-decoration: none; font-style:italic"> &nbsp; &nbsp; &nbsp;- PRINCE2</a><br />
+                            <a href="<?= $linkBase ?>/agile-methods/training/dsdm-atern/dsdm-atern-practitioner/" style="color: white; text-decoration: none; font-style:italic"> &nbsp; &nbsp; &nbsp;- DSDM Atern</a><br />
+                            <div style="vertical-align: middle"><a href="<?= $linkBase ?>/business-analysis/" style="color: white; text-decoration: none"><img src="<?= $linkBase ?>/mailing/common/images/link.gif" alt="&gt;" style="border: 0px; height: 16px; width: 10px; vertical-align: middle" />&nbsp;Business Analysis</a></div>
+                            <div style="vertical-align: middle"><a href="<?= $linkBase ?>/systems-development/" style="color: white; text-decoration: none"><img src="<?= $linkBase ?>/mailing/common/images/link.gif" alt="&gt;" style="border: 0px; height: 16px; width: 10px; vertical-align: middle" />&nbsp;Systems Development</a></div>
+                            <div style="vertical-align: middle"><a href="<?= $linkBase ?>/service-management/" style="color: white; text-decoration: none"><img src="<?= $linkBase ?>/mailing/common/images/link.gif" alt="&gt;" style="border: 0px; height: 16px; width: 10px; vertical-align: middle" />&nbsp;Service Management</a></div>
+                            <a href="<?= $linkBase ?>/service-management/training/it-service-management/itil-foundation/#DatesBooking" style="color: white; text-decoration: none; font-style:italic"> &nbsp; &nbsp; &nbsp;- ITIL</a><br />
+                            <div style="vertical-align: middle"><a href="<?= $linkBase ?>/agile-methods/" style="color: white; text-decoration: none"><img src="<?= $linkBase ?>/mailing/common/images/link.gif" alt="&gt;" style="border: 0px; height: 16px; width: 10px; vertical-align: middle" />&nbsp;Agile Methods</a></div>
+                            <a href="<?= $linkBase ?>/agile-methods/training/agile-leadership/agile-project-leadership/" style="color: white; text-decoration: none; font-style:italic"> &nbsp; &nbsp; &nbsp;- Agile Project Leadership</a><br />
+                            <a href="<?= $linkBase ?>/agile-methods/training/dsdm-atern/dsdm-atern-practitioner/" style="color: white; text-decoration: none; font-style:italic"> &nbsp; &nbsp; &nbsp;- DSDM Atern</a><br />
+                            <a href="<?= $linkBase ?>/agile-methods/training/facilitation-techniques/workshop-facilitation-techniques/" style="color: white; text-decoration: none; font-style:italic"> &nbsp; &nbsp; &nbsp;- Workshop Facilitation</a><br />
+                    </td>
+                </tr>
+                <tr><td style="height: 10px"></td></tr>
+                <tr>
+                    <td style="background-color: #798CB0; text-align: justify; padding: 10px">
+                            <div style="font-weight: bold; margin-bottom: 4px">KEEP IN TOUCH</div>
+                            There are exciting things happening here at TCC.  We are developing
+                            some fantastic new training courses and enhancing our website all the
+                            time - making it even easier to get the information you need, as
+                            well as articles and useful resources.<br />
+                            <br />
+                            Please help us keep in touch with the right information.
+                            <div style="text-align: right; vertical-align:middle">
+                            <a href="<?= $linkBase ?>/secret/#p-whatNow"><img src="<?= $linkBase ?>/mailing/common/images/link.gif" alt="&gt;" style="border: 0px; height: 16px; width: 10px; vertical-align: middle" /></a>&nbsp;<a href="<?= $linkBase ?>/secret/#p-whatNow"
+                            style="color:#FFF; text-decoration:underline">let us
+                            know your interests</a></div>
+                    </td>
+                </tr>
+            </table>
+<?php endif; ?>
+
+            <p style="margin-bottom: 15px">Dear <?= $order['meta']['customer']['firstName'] ?>,</p>
+
+            <p style="margin-bottom: 15px">Thank you for placing an order on the TCC
+            website, the details of which are outlined below:</p>
+
+            <table style="border: 1px dotted #99b2cf; background-color: #FDFDFD; text-align: left; width: 100%"><tr><td style="padding: 10px;">
+            <table border="0" align="center" cellpadding="0" cellspacing="0" style="font-family: Verdana; font-size: 11px; width: 100%">
+                <tr>
+                    <td style="padding-right: 20px; padding-bottom: 5px"><span style="font-weight: bold">Description</span></td>
+                    <td style="padding-right: 20px; padding-bottom: 5px"><span style="font-weight: bold">Quantity</span></td>
+                    <td style="padding-right: 20px; padding-bottom: 5px"><span style="font-weight: bold">Unit Price</span></td>
+                    <td style="padding-right: 20px; padding-bottom: 5px; text-align: right; font-weight: bold">Total</td>
+                </tr>
+<?php foreach ($order['items'] as $item): ?>
+                <tr>
+                    <td style="border-top: 1px solid #99b2cf; text-align: left; padding-right: 20px; vertical-align: top; padding-bottom: 10px; padding-top: 5px">
+                        <?= $item['product']; ?> (<?= $item['description']; ?>)
+                    </td>
+                    <td style="border-top: 1px solid #99b2cf; text-align: left; padding-right: 20px; vertical-align: top; padding-bottom: 10px; padding-top: 5px"><?= $item['quantity']; ?></td>
+                    <td style="border-top: 1px solid #99b2cf; text-align: left; padding-right: 20px; vertical-align: top; padding-bottom: 10px; padding-top: 5px"><?= $this->currencyFormat($item['priceGross'], 'GBP'); ?></td>
+                    <td style="border-top: 1px solid #99b2cf; text-align: left; padding-right: 20px; vertical-align: top; padding-bottom: 10px; padding-top: 5px; text-align: right"><?= $this->currencyFormat($item['totalGross'], 'GBP'); ?></td>
+                </tr>
+<?php /*
+{if isset($line.course->additionalCheckoutInfo)}
+                <tr>
+                    <td colspan="4">
+                        <div style="border: 1px dotted #99b2cf; background-color: #ffffbb; margin-left: 20px; margin-bottom: 5px">
+                            <br />
+                            &nbsp; &nbsp;{$line.course->additionalCheckoutInfo}
+                            <br />
+                            &nbsp;                        
+                        </div>
+                    </td>
+                </tr>
+{/if}
+*/ ?>
+                <tr>
+                    <td colspan="4">
+<?php if (isset($item['meta']['delegates']) || isset($item['meta']['quizical'])): ?>
+                        <div style="border: 1px dotted #99b2cf; background-color: #b2c2d7; margin-left: 20px; margin-bottom: 30px">
+<?php if (isset($item['meta']['delegates'])): ?>
+<?php foreach ($item['meta']['delegates'] as $number => $delegate): ?>
+                            <br />
+                            &nbsp; &nbsp;<span style="font-weight:bold">Delegate <?= $number + 1; ?>:</span> <?= $delegate['firstName']; ?> <?= $delegate['lastName']; ?> (<?= $delegate['email']; ?>)<br />
+<?php endforeach; ?>
+<?php elseif (isset($item['meta']['quizical'])): ?>
+                            <br />
+                            &nbsp; &nbsp;Your Quizical access code(s) will follow in a separate email.
+                            <br />
+<?php endif; ?>
+                            &nbsp;
+                        </div>
+<?php endif; ?>
+                    </td>
+                </tr>
+<?php endforeach; ?>
+                <tr style="height:30px; vertical-align:bottom">
+                    <td colspan="2" style="font-variant:small-caps; font-weight:bold; padding-right: 20px; border-top: 1px solid #99B2CF">Total Excluding VAT</td>
+                    <td colspan="2" style="font-variant:small-caps; font-weight:bold; padding-right: 20px; border-top: 1px solid #99B2CF; text-align: right"><?= $this->currencyFormat($order['totalGross'], 'GBP'); ?></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-variant:small-caps; font-weight:bold; padding-right: 20px">VAT</td>
+                    <td colspan="2" style="font-variant:small-caps; font-weight:bold; padding-right: 20px; text-align: right"><?= $this->currencyFormat($order['totalTax'], 'GBP'); ?></td>
+                </tr>
+                <tr class="basketTotal">
+                    <td colspan="2" style="font-variant:small-caps; font-weight:bold; padding-right: 20px">Total Including VAT</td>
+                    <td colspan="2" style="font-variant:small-caps; font-weight:bold; padding-right: 20px; text-align: right"><?= $this->currencyFormat($order['totalNet'], 'GBP'); ?></td>
+                </tr>
+            </table>
+            </td></tr></table>
+            <br />
+            <table style="border: 1px dotted #99b2cf; background-color: #FDFDFD; text-align: left; width: 100%"><tr><td>
+            <table style="vertical-align: top; font-family: Verdana; font-size: 11px">
+                <tr>
+                    <td colspan="2" style="font-weight: bold">Your Details</td>
+                </tr>
+                <tr>
+                    <td    style="width: 130px">Title</td>
+                    <td><?= $order['meta']['customer']['title']; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 130px">First Name</td>
+                    <td><?= $order['meta']['customer']['firstName']; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 130px">Last Name</td>
+                    <td><?= $order['meta']['customer']['lastName']; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 130px"><label for="telephone">Telephone</label></td>
+                    <td><?= $order['meta']['customer']['telephone']; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 130px"><label for="email">Email</label></td>
+                    <td><?= $order['meta']['customer']['email']; ?></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" style="font-weight: bold; padding-top: 1.2em">Your Address</td>
+                </tr>
+                <tr>
+                    <td style="width: 130px"></td>
+                    <td>
+                        <?= nl2br($order['meta']['customer']['address']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="nameFieldHeader" style="font-weight: bold; padding-top: 1.2em">Your Company</td>
+                </tr>
+                <tr>
+                    <td style="width: 130px">Company Name</td>
+                    <td><?= $order['meta']['customer']['companyName']; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 130px">Company Size</td>
+                    <td><?= $order['meta']['customer']['companySize']; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 130px">Job Role</td>
+                    <td><?= $order['meta']['customer']['jobTitle']; ?></td>
+                </tr>
+            </table>
+            </td>
+            <td style="vertical-align: top; width: 50%">
+<?php if ($order['totalNet'] > 0): ?>
+            <table style="vertical-align: top; font-family: Verdana; font-size: 11px">
+                <tr>
+                    <td colspan="2" style="font-weight: bold">Invoice Details</td>
+                </tr>
+                <tr>
+                    <td style="width: 130px"><?php if ($order['payment']['type'] == 'CC'): ?>Billing<?php else: ?>Invoice<?php endif;?> Name</td>
+                    <td><?= $order['meta']['billing']['firstName'] ?> <?= $order['meta']['billing']['lastName']; ?></td>
+                </tr>
+                <tr>
+                    <td style="width: 130px"><?php if ($order['payment']['type'] == 'CC'): ?>Billing<?php else: ?>Invoice<?php endif;?> Telephone</td>
+                    <td><?= $order['meta']['billing']['telephone']; ?></td>
+                </tr>
+<?php if($order['payment']['type'] == 'INVOICE'): ?>
+                <tr>
+                    <td style="width: 130px">Contact Email</td>
+                    <td><?= $order['meta']['billing']['email']; ?></td>
+                </tr>
+<?php if(isset($order['poNumber'])): ?>
+                <tr>
+                    <td style="width: 130px">P/O Number</td>
+                    <td><?= $order['poNumber']; ?></td>
+                </tr>
+<?php endif; ?>
+<?php endif; ?>
+                <tr>
+                    <td colspan="2" style="padding-top: 1.2em; font-weight: bold">Payment Details</td>
+                </tr>
+                <tr>
+                    <td style="width: 130px">Payment Type</td>
+                    <td><?= $order['payment']['description']; ?></td>
+                </tr>
+                <tr>
+                    <td colspan="2" id="nameFieldHeader" style="font-weight: bold; padding-top: 1.2em">Registered Billing Address</td>
+                </tr>
+                <tr>
+                    <td style="width: 130px"></td>
+                    <td>
+                        <?= nl2br($order['meta']['billing']['address']) ?>
+                    </td>
+                </tr>
+            </table>
+<?php else: ?>
+            <table style="vertical-align: top; width: 100%; height: 100%; font-family: Verdana; font-size: 11px">
+                <tr>
+                    <td style="font-weight: bold; font-size: 1.5em; text-align: center;">
+                        NO PAYMENT IS REQUIRED FOR THIS ORDER
+                    </td>
+                </tr>
+            </table>
+<?php endif; ?>
+            </td></tr></table>
+            <p></p>
+            <p style="margin-bottom: 15px">
+                <div style="font-weight:bold; text-decoration:underline">
+                    Special Requirements
+                </div>
+                If any of the delegates have special requirements relating to dietary or
+                mobility needs, please contact and notify us of these as soon as
+                possible such that we can ensure that they are correctly met.
+            </p>
+
+            <p style="margin-bottom: 15px">Once again, thank you for booking and we
+            look forward to welcoming you / your delegate(s) onto one of our upcoming
+            courses.</p>
+
+
+            <p style="margin-bottom: 15px">Kind Regards,</p>
+
+            <p style="margin-bottom: 15px">
+                <span style="font-weight: bold">TCC</span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="font-family:Verdana; font-size:10px; padding: 10px">
+            <div style="border-top: 1px solid #b2c2d7; padding-top:5px">
+                In placing an order with TCC, you are subject to our Terms and Conditions 
+                (<a href="<?= $linkBase ?>/TCC_T&Cs(TC101).pdf">view</a>).
+                <br /><br />
+                TCC takes your privacy very seriously - for a very readable description
+                of how we respect and protect your information, please see our
+                <a href="<?= $linkBase ?>/privacy.htm" target="_blank">Privacy
+                Policy</a>.<br />
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div style="text-align: center; font-family:Verdana; font-size: 10px; color: #858585; padding-top: 20px; margin-bottom: 10px">
+  <hr>
+  <div style="font-weight: bold">TCC, Aspen House, Newcastle Road, Sandbach, Cheshire, CW11 2UE.</div>
+  Registered in England.&nbsp;No. 02748138. Registered Office: Orchard House, Dingle Lane, Sandbach, Cheshire, CW11 1FY.
+</div>
+<div style="text-align: center; font-family:Verdana; font-size: 8px; color: #A5A5A5; padding-top: 10px; margin-bottom: 30px">
+  PRINCE2&reg; is a registered trade mark of the Cabinet Office.
+</div>
+</body>
+</html>

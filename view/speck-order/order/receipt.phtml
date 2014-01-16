@@ -1,0 +1,427 @@
+<?php 
+$this->headLink()->appendStylesheet('/tcc-ecommerce-theme/css/tcc-ecommerce-theme.css');
+?>
+
+<style>
+thead {
+    border-bottom: 5px solid #FFF
+}
+
+th {
+    background-color: #404040;
+    color: #fff;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-align: left;
+    border-right: 5px solid #fff;
+    padding-left: 10px;
+}
+
+th:last-child {
+    border-right: none;
+}
+
+.cartHeader {
+    padding-bottom: 0;
+}
+
+.cartHeader.description {
+    padding: 0;
+    padding-left: 10px;
+}
+
+.cartRow.shade {
+    background-color: #f1f1ff;
+}
+
+.cartCell {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 13px;
+}
+
+.cartCell.description {
+    background-image: url(/img/layout/bullet-circle-cross.png);
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+    vertical-align: top;
+    padding-top: 10px;
+    font-size: 16px;
+    
+    
+}
+
+.cartCell.description .product {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.delegate-summary {
+    margin-left: 40px;
+    background-color: #f5f5f5;
+    border-right: none;
+    margin-bottom: 0;
+    border-top: 1px dotted #ccc;
+    border-left: none;
+    border-bottom: none;
+    background-color: transparent;
+    padding: 0;
+    line-height: 1.7em;
+}
+
+.cartCell.delegates {
+    padding-bottom: 10px;
+}
+
+#customer-address .icon{
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+    
+    margin-left: -10px;
+    margin-right: 20px;
+    vertical-align: top;
+    background-color: #2384c6;
+    /* REPLACE THIS IMAGE */
+    background-image: url(/img/icon/in-tray.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+#customer-address .detail {
+    display: inline-block;
+}
+
+#customer-address .detail .name {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+#customer-address .detail .address {
+    color: #777;
+}
+
+#orderTotalNet {
+    line-height: 40px;
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    text-align: right;
+    padding-right: 20px;
+}
+
+#orderTax {
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: right;
+    padding-right: 20px;
+    background-color: #f1f1ff;
+}
+
+#orderTotalGross {
+    line-height: 40px;
+    font-size: 16px;
+    font-weight: 400;
+    background-color: #f1f1ff;
+    border-bottom: 5px solid #fff;
+    margin-right: -15px;
+}
+
+</style>
+
+<!-- 
+<div class="row">
+    <div class="span12" style="text-align: center; font-size: 30px; padding: 20px 0;">
+        <div style="/*border: 2px dashed #ddddff; */margin: 0 20px; padding: 40px">
+            Your order is complete - thank you.
+        </div>
+    </div>
+</div>
+
+
+</div><img src="/img/layout/page-shadow.png" id="pageShadow" class="container"><div id="page" class="container">
+-->
+
+
+<div class="row" style="height: 55px;">
+    <div class="span6">
+    <!-- 
+        <div style="padding: 20px; background-color: #2384c6; margin-left: 10px;
+height: 70px;
+color: #fff;
+font-weight: 600;">
+            <div style="display: inline-block; margin-top: 10px; height: 25px; line-height: 25px;">+44 (0)1477 500 011</div>
+            <div style="display: inline-block; margin-top: 10px; height: 25px; line-height: 25px;">contact@tcc-net.com</div>
+            <div style="margin-bottom: 10px; height: 35px; line-height: 35px">Aspen House, Newcastle Road, Sandbach, Cheshire, CW11 1FY</div>
+        </div>
+         -->
+    </div>
+    <div class="span6" style="position: relative">
+        <img src="/img/layout/logo-tcc.png" style="position: absolute; top: 20px; right: 20px; width: 200px;" />
+    </div>
+</div>
+
+<hr style="margin: 30px 10px; border: none; height: 4px; background-image: url(/img/layout/dash-bcbdc0.png); background-repeat: repeat-x;" />
+
+<div class="row">
+    <div class="span12">
+        <p style="padding: 0 20px; margin-top: -20px; margin-bottom: 20px;">Thank you for your order, which is detailed below.</p>
+    </div>
+</div>
+
+<div class="row" style="height: 40px; font-weight: 400; font-size: 18px; letter-spacing: 1px; line-height: 40px; color: #fff;">
+    <div class="span6">
+        <div style="margin-left: 10px; margin-right: -15px; background-color: #2384c6;">
+            <span style="margin-left: 10px; color: #c8e0f1">ORDER NUMBER:</span> <span><?= 33000 + $order['number']; ?></span>
+        </div>
+    </div>
+    
+    <div class="span3">
+        <div style="margin-right: -15px; background-color: #404040; height: 40px; line-height: 40px;">
+            <span style="color: #a7a9ac; margin-left: 10px;">DATE:</span> <span>20/12/2013</span>
+        </div>
+    </div>
+    
+    <div class="span3" style="background-color: #404040; height: 40px; line-height: 40px;">
+        <span style="color: #a7a9ac; margin-left: 10px;">DUE:</span> <span><?= $order['meta']['payment']['method'] == 'cc' ? 'PAID' : 'NOW'; ?></span>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="span12">
+        <div id="customer-address" style="padding: 20px;">
+            <div class="icon" /></div>
+            
+            <div class="detail">
+                <div class="name"><? //= $order['meta']['billing']['title'] ?> <?= $order['meta']['billing']['firstName'] ?> <?= $order['meta']['billing']['lastName'] ?></div>
+                <div class="address"><?= nl2br($order['meta']['billing']['address']) ?></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="margin: 30px 10px; border: none; height: 4px; background-image: url(/img/layout/dash-bcbdc0.png); background-repeat: repeat-x;" />
+
+
+
+
+
+
+<div class="row"> 
+    <div class="span12">
+        <div id="cartSummary" style="margin-left: 10px">
+            <table style="width: 100%;" border="0">
+                <thead>
+                    <tr>
+                        <th class="span6 cartHeader description" style="padding-left: 10px">DESCRIPTION</th>
+                        <th class="cartHeader">QUANTITY</th>
+                        <th class="cartHeader">UNIT PRICE</th>
+                        <th class="cartHeader">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <?php foreach ($order['items'] as $index => $item): ?>
+                    <tr class="cartRow<?php if($index % 2 == 0) { ?> shade<?php } ?>">
+                        <td class="cartCell description">
+                            <div class="product"><?= $item['product']; ?></div>
+                            <div><?= $item['description']; ?></div>
+                        </td>
+                        <td class="cartCell"><?= $item['quantity']; ?></td>
+                        <td class="cartCell"><?= $this->currencyFormat($item['priceGross'], 'GBP'); ?></td>
+                        <td class="cartCell"><?= $this->currencyFormat($item['totalGross'], 'GBP'); ?></td>
+                    </tr>
+                    <tr class="cartRow<?php if($index % 2 == 0) { ?> shade<?php } ?>">
+                        <td colspan="4" class="cartCell delegates">
+                            <div class="delegate-summary">
+                                <?php foreach ($item['meta']['delegates'] as $number => $delegate): ?>
+                                <div class="delegate-line">
+                                    <span class="bold">Delegate <?= $number + 1; ?>: </span>
+                                    <?= $delegate['firstName']; ?>
+                                    <?= $delegate['lastName']; ?>
+                                    (<?= $delegate['email']; ?>)
+                                </div>
+                                <?php endforeach;?>
+                            </div>
+                        </td>
+                        </td>
+                    </tr>
+            <? //=$this->partial('partial/delegate-line.phtml', array('delegates' => $item['delegates']))?>
+            <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row" style="margin-top: 30px;">
+    <div class="offset6 span3">
+        <div id="orderTotalGross">
+            <span style="margin-left: 10px; color: #888">SUBTOTAL:</span> <span><?= $this->currencyFormat($order['totalGross'], 'GBP'); ?></span>
+        </div>
+    </div>
+    <div class="span3">
+        <div id="orderTax">
+            <span style="margin-left: 10px; color: #888">VAT:</span> <span><?= $this->currencyFormat($order['totalTax'], 'GBP'); ?></span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="offset6 span6">
+        <div id="orderTotalNet" style="background-color: #2384c6;">
+            <span style="margin-left: 10px; color: #c8e0f1">TOTAL:</span> <span><?= $this->currencyFormat($order['totalNet'], 'GBP'); ?></span>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="span6">
+        <div class="customer-details" style="padding: 20px">
+            <h2>Your Details</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Title</td>
+                        <td><?= $order['meta']['customer']['title']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>First Name:</td>
+                        <td><?= $order['meta']['customer']['firstName']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Last Name:</td>
+                        <td><?= $order['meta']['customer']['lastName']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Telephone:</td>
+                        <td><?= $order['meta']['customer']['telephone']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><?= $order['meta']['customer']['email']; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="customer-address" style="padding: 20px">
+            <h2>Your Address</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Address:</td>
+                        <td><?= $order['meta']['customer']['address']; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        
+        <div class="customer-company" style="padding: 20px">
+            <h2>Your Company</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Company Name:</td>
+                        <td><?= $order['meta']['customer']['companyName']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Job Role:</td>
+                        <td><?= $order['meta']['customer']['jobTitle']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Company Size:</td>
+                        <td><?= $order['meta']['customer']['companySize']; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="span6">
+        <div class="customer-company" style="padding: 20px">
+            <h2>Billing Details</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>First Name:</td>
+                        <td><?= $order['meta']['billing']['firstName']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Last Name:</td>
+                        <td><?= $order['meta']['billing']['lastName']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Telephone:</td>
+                        <td><?= $order['meta']['billing']['telephone']; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+    
+    
+        
+        <div class="billing-address" style="padding: 20px">
+            <h2>Billing Address</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Address:</td>
+                        <td><?= $order['meta']['billing']['address']; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+</div>
