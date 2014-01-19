@@ -1,4 +1,4 @@
-<?php 
+<?php
 $linkBase = 'http://www.tcc-net.com';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -116,7 +116,7 @@ $linkBase = 'http://www.tcc-net.com';
 <?php foreach ($order['items'] as $item): ?>
                 <tr>
                     <td style="border-top: 1px solid #99b2cf; text-align: left; padding-right: 20px; vertical-align: top; padding-bottom: 10px; padding-top: 5px">
-                        <?= $item['product']; ?> (<?= $item['description']; ?>)
+                        <?= $item['product']; ?> (<?= $item['options']; ?>)
                     </td>
                     <td style="border-top: 1px solid #99b2cf; text-align: left; padding-right: 20px; vertical-align: top; padding-bottom: 10px; padding-top: 5px"><?= $item['quantity']; ?></td>
                     <td style="border-top: 1px solid #99b2cf; text-align: left; padding-right: 20px; vertical-align: top; padding-bottom: 10px; padding-top: 5px"><?= $this->currencyFormat($item['priceGross'], 'GBP'); ?></td>
@@ -130,7 +130,7 @@ $linkBase = 'http://www.tcc-net.com';
                             <br />
                             &nbsp; &nbsp;{$line.course->additionalCheckoutInfo}
                             <br />
-                            &nbsp;                        
+                            &nbsp;
                         </div>
                     </td>
                 </tr>
@@ -301,7 +301,7 @@ $linkBase = 'http://www.tcc-net.com';
     <tr>
         <td colspan="2" style="font-family:Verdana; font-size:10px; padding: 10px">
             <div style="border-top: 1px solid #b2c2d7; padding-top:5px">
-                In placing an order with TCC, you are subject to our Terms and Conditions 
+                In placing an order with TCC, you are subject to our Terms and Conditions
                 (<a href="<?= $linkBase ?>/TCC_T&Cs(TC101).pdf">view</a>).
                 <br /><br />
                 TCC takes your privacy very seriously - for a very readable description

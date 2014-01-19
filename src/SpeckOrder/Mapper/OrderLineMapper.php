@@ -5,7 +5,7 @@ namespace SpeckOrder\Mapper;
 use Zend\Db\Sql\Where;
 use ZfcBase\Mapper\AbstractDbMapper;
 use SpeckOrder\Entity\OrderLine;
-use SpeckOrder\Entity\Order;
+use SpeckOrder\Entity\Order as OrderEntity;
 use Zend\Stdlib\ArrayUtils;
 
 class OrderLineMapper extends AbstractDbMapper
@@ -32,7 +32,8 @@ class OrderLineMapper extends AbstractDbMapper
         return $result;
     }
 
-    public function persistFromOrder(Order $order)
+    // TODO: Don't use OrderEntity, use OrderInterface
+    public function persistFromOrder(OrderEntity $order)
     {
         foreach ($order as $line) {
             $this->persist($line);

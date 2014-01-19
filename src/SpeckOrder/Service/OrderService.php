@@ -4,7 +4,7 @@ namespace SpeckOrder\Service;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use SpeckOrder\Entity\OrderInterface;
+use SpeckOrder\Entity\OrderInterface as OrderEntityInterface;
 use SpeckOrder\Entity\OrderAddress;
 use Zend\Stdlib\ArrayUtils;
 use SpeckOrder\Entity\OrderMeta;
@@ -79,7 +79,7 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
 //     * findById
 //     *
 //     * @param int $id
-//     * @return OrderInterface|null
+//     * @return OrderEntityInterface|null
 //     */
 //    public function findById($id){}
 //
@@ -87,7 +87,7 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
 //     * fundByCustomerId
 //     *
 //     * @param mixed $id
-//     * @return OrderInterface[]
+//     * @return OrderEntityInterface[]
 //     */
 //    public function findByCustomerId($id){}
 //
@@ -95,7 +95,7 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
 //     * findByInvoice
 //     *
 //     * @param InvoiceInterface $invoice
-//     * @return OrderInterface|null
+//     * @return OrderEntityInterface|null
 //     */
 //    public function findByInvoice(InvoiceInterface $invoice){}
 //
@@ -110,10 +110,10 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
    /**
     * persist
     *
-    * @param OrderInterface $order
+    * @param OrderEntityInterface $order
     * @return OrderServiceInterface
     */
-   public function persist(OrderInterface $order)
+   public function persist(OrderEntityInterface $order)
    {
         $this->getOrderMapper()->persist($order);
         $this->getOrderLineMapper()->persistFromOrder($order);
@@ -132,63 +132,10 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
 
     public function getReceiptData($order)
     {
-//         $ba = new Address();
-//         $ba->setAddressId(2)
-//            ->setName('By Fraud')
-//            ->setStreetAddress('33 Little Street')
-//            ->setCity('Bigtown')
-//            ->setProvince('Largeville')
-//            ->setPostalCode('BI13 1DH')
-//            ->setCountry('United Kingdom');
-        
-//         $ca = new Address();
-//         $ca->setAddressId(2)
-//            ->setName('Innocent Man')
-//            ->setStreetAddress('33 Mark Street')
-//            ->setCity('Contown')
-//            ->setProvince('Middleville')
-//            ->setPostalCode('MD13 1DH')
-//            ->setCountry('United Kingdom');
-        
-        
-//         $temp = new OrderMeta();
-//         $temp->setCustomerCompanyName('Awesome Corp')
-//              ->setCustomerCompanySize(300)
-//              ->setCustomerEmail('mr.awesome@tcc-net.com')
-//              ->setCustomerFirstName('Angus')
-//              ->setCustomerLastName('Awesome')
-//              ->setCustomerJobTitle('Head of Awesome Division')
-//              ->setCustomerTelephone('01234 567890')
-//              ->setCustomerTitle('Mr.')
-//              ->setCustomerAddress($ca);
-
-//         $ba = new Address();
-//         $ba->setAddressId(2)
-//            ->setName('By Fraud')
-//            ->setStreetAddress('33 Little Street')
-//            ->setCity('Bigtown')
-//            ->setProvince('Largeville')
-//            ->setPostalCode('BI13 1DH')
-//            ->setCountry('United Kingdom');
-
-//         $temp->setBillingFirstName('Ipay')
-//              ->setBillingLastName('Allthebills')
-//              ->setBillingTelephone('09876543210')
-//              ->setBillingAddress($ba);
-        
-//         $om = $this->getOrderMapper();
-//         $o = $om->findbyId(87);
-//         $o->setMeta($temp);
-//         $om->persist($o);
-//         die();
-        
-        
-        
-        if(!$order instanceof OrderInterface) {
+        if(!$order instanceof OrderEntityInterface) {
             $order = $this->getOrder($order);
         }
-       
-        
+
         $receiptData = [
             'number'     => $order->getId(),
             'payment'    => [
@@ -199,16 +146,18 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
         	'totalTax'   => 0,
         	'totalNet'   => 0,
         ];
-        
+
         $items = [];
         foreach($order as $item) {
             $lineTotalGross = $item->getPrice() * $item->getQuantityInvoiced();
             $lineTotalTax   = $item->getTax() * $item->getQuantityInvoiced();
             $lineTotalNet   = $lineTotalGross + $lineTotalTax;
-            
+
             $items[] = [
+                // TODO: Update price stuff to match new stuff for CartItem entity.
+                // TODO: Use new separate functions for recursive descriptions?
                 'product'     => trim(strtok($item->getDescription(), '-')),
-                'description' => trim(strtok('')),
+                'options'     => trim(strtok('')),
                 'priceGross'  => $item->getPrice(),
                 'tax'         => $item->getTax(),
                 'priceNet'    => $item->getPrice() + $item->getTax(),
@@ -216,17 +165,16 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
                 'totalGross'  => $lineTotalGross,
                 'totalTax'    => $lineTotalTax,
                 'totalNet'    => $lineTotalNet,
-                
+
                 'meta'        => $item->getMeta(),
             ];
-            
+
             // Update order totals.
             $receiptData['totalGross'] += $lineTotalGross;
             $receiptData['totalTax']   += $lineTotalTax;
             $receiptData['totalNet']   += $lineTotalNet;
         }
-       
-       
+
         $receiptData['items']     = $items;
         $receiptData['itemCount'] = count($items);
         $receiptData['meta']      = $order->getMeta();

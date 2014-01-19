@@ -1,4 +1,4 @@
-<?php 
+<?php
 $this->headLink()->appendStylesheet('/tcc-ecommerce-theme/css/tcc-ecommerce-theme.css');
 ?>
 
@@ -22,6 +22,11 @@ th {
 
 th:last-child {
     border-right: none;
+}
+
+td {
+    padding-right: 15px;
+    vertical-align: top;
 }
 
 .cartHeader {
@@ -51,8 +56,8 @@ th:last-child {
     vertical-align: top;
     padding-top: 10px;
     font-size: 16px;
-    
-    
+
+
 }
 
 .cartCell.description .product {
@@ -81,7 +86,7 @@ th:last-child {
     height: 100px;
     width: 100px;
     display: inline-block;
-    
+
     margin-left: -10px;
     margin-right: 20px;
     vertical-align: top;
@@ -136,7 +141,7 @@ th:last-child {
 
 </style>
 
-<!-- 
+<!--
 <div class="row">
     <div class="span12" style="text-align: center; font-size: 30px; padding: 20px 0;">
         <div style="/*border: 2px dashed #ddddff; */margin: 0 20px; padding: 40px">
@@ -152,7 +157,7 @@ th:last-child {
 
 <div class="row" style="height: 55px;">
     <div class="span6">
-    <!-- 
+    <!--
         <div style="padding: 20px; background-color: #2384c6; margin-left: 10px;
 height: 70px;
 color: #fff;
@@ -182,13 +187,13 @@ font-weight: 600;">
             <span style="margin-left: 10px; color: #c8e0f1">ORDER NUMBER:</span> <span><?= 33000 + $order['number']; ?></span>
         </div>
     </div>
-    
+
     <div class="span3">
         <div style="margin-right: -15px; background-color: #404040; height: 40px; line-height: 40px;">
             <span style="color: #a7a9ac; margin-left: 10px;">DATE:</span> <span>20/12/2013</span>
         </div>
     </div>
-    
+
     <div class="span3" style="background-color: #404040; height: 40px; line-height: 40px;">
         <span style="color: #a7a9ac; margin-left: 10px;">DUE:</span> <span><?= $order['meta']['payment']['method'] == 'cc' ? 'PAID' : 'NOW'; ?></span>
     </div>
@@ -199,7 +204,7 @@ font-weight: 600;">
     <div class="span12">
         <div id="customer-address" style="padding: 20px;">
             <div class="icon" /></div>
-            
+
             <div class="detail">
                 <div class="name"><? //= $order['meta']['billing']['title'] ?> <?= $order['meta']['billing']['firstName'] ?> <?= $order['meta']['billing']['lastName'] ?></div>
                 <div class="address"><?= nl2br($order['meta']['billing']['address']) ?></div>
@@ -226,7 +231,7 @@ font-weight: 600;">
 
 
 
-<div class="row"> 
+<div class="row">
     <div class="span12">
         <div id="cartSummary" style="margin-left: 10px">
             <table style="width: 100%;" border="0">
@@ -243,7 +248,7 @@ font-weight: 600;">
                     <tr class="cartRow<?php if($index % 2 == 0) { ?> shade<?php } ?>">
                         <td class="cartCell description">
                             <div class="product"><?= $item['product']; ?></div>
-                            <div><?= $item['description']; ?></div>
+                            <div><?= $item['options']; ?></div>
                         </td>
                         <td class="cartCell"><?= $item['quantity']; ?></td>
                         <td class="cartCell"><?= $this->currencyFormat($item['priceGross'], 'GBP'); ?></td>
@@ -352,19 +357,63 @@ font-weight: 600;">
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="span6">
+        <div class="customer-company" style="padding: 20px">
+            <h2>Billing Details</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Name:</td>
+                        <td><? //= $order['meta']['billing']['title'] ?> <?= $order['meta']['billing']['firstName'] ?> <?= $order['meta']['billing']['lastName'] ?></td>
+                    </tr>
+                    <tr>
+                        <td>Telephone:</td>
+                        <td><?= $order['meta']['billing']['telephone']; ?></td>
+                    </tr>
+<?php if (isset($order['meta']['billing']['email'])): ?>
+                    <tr>
+                        <td>Email:</td>
+                        <td><?= $order['meta']['billing']['email']; ?></td>
+                    </tr>
+<?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span6">
         <div class="customer-address" style="padding: 20px">
             <h2>Your Address</h2>
             <table>
                 <tbody>
                     <tr>
                         <td>Address:</td>
-                        <td><?= $order['meta']['customer']['address']; ?></td>
+                        <td><?= nl2br($order['meta']['customer']['address']); ?></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        
-        
+    </div>
+    <div class="span6">
+        <div class="billing-address" style="padding: 20px">
+            <h2>Billing Address</h2>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Address:</td>
+                        <td><?= nl2br($order['meta']['billing']['address']); ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span6">
         <div class="customer-company" style="padding: 20px">
             <h2>Your Company</h2>
             <table>
@@ -387,41 +436,5 @@ font-weight: 600;">
     </div>
 
     <div class="span6">
-        <div class="customer-company" style="padding: 20px">
-            <h2>Billing Details</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>First Name:</td>
-                        <td><?= $order['meta']['billing']['firstName']; ?></td>
-                    </tr>
-                    <tr>
-                        <td>Last Name:</td>
-                        <td><?= $order['meta']['billing']['lastName']; ?></td>
-                    </tr>
-                    <tr>
-                        <td>Telephone:</td>
-                        <td><?= $order['meta']['billing']['telephone']; ?></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    
-    
-    
-        
-        <div class="billing-address" style="padding: 20px">
-            <h2>Billing Address</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Address:</td>
-                        <td><?= $order['meta']['billing']['address']; ?></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
     </div>
-    
-    
 </div>
