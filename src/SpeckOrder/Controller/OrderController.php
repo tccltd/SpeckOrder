@@ -9,13 +9,13 @@ use SpeckOrder\Entity\OrderInterface;
 class OrderController extends AbstractActionController
 {
     /**
-     * Most likely to be SpeckCheckoutOrder\Service\CheckoutService - a bridging module between SpeckCheckout and 
+     * Most likely to be SpeckCheckoutOrder\Service\CheckoutService - a bridging module between SpeckCheckout and
      * SpeckOrder.
-     * 
+     *
      * @var \stdClass
      */
     protected $checkoutService;
-    
+
     /**
      * @var \SpeckOrder\Service\OrderService
      */
@@ -25,7 +25,7 @@ class OrderController extends AbstractActionController
      * @param \stdClass $checkoutService
      * @param \SpeckOrder\Service\OrderService $orderService
      */
-    public function __construct($checkoutService, OrderService $orderService)
+    public function __construct($checkoutService, $orderService)
     {
         $this->checkoutService = $checkoutService;
         $this->orderService = $orderService;
@@ -38,7 +38,7 @@ class OrderController extends AbstractActionController
     {
         // Retrieve the current order from the session for storage.
         $order = $this->getCheckoutService()->getOrder();
-        
+
         // If an order is not available to be stored, skip storing.
         if($order instanceof OrderInterface) {
             $eventResult = $this->getEventManager()->trigger(
@@ -56,7 +56,7 @@ class OrderController extends AbstractActionController
                 array('order' => $receiptData)
             );
         }
-        
+
         $this->redirect()->toRoute('order/receipt', [ 'id' => $order->getId() ]);
     }
 
@@ -70,12 +70,13 @@ class OrderController extends AbstractActionController
 
         return [
             'order' => $receiptData,
+            'order_id' => $this->params()->fromRoute('id'),
         ];
     }
 
     /**
      * Get the associated CheckoutService.
-     * 
+     *
      * @return stdClass
      */
     public function getCheckoutService()
@@ -85,7 +86,7 @@ class OrderController extends AbstractActionController
 
     /**
      * Get the associated OrderService.
-     * 
+     *
      * @return \SpeckOrder\Service\OrderService
      */
     public function getOrderService()

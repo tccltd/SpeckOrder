@@ -1,5 +1,7 @@
 <?php
 $this->headLink()->appendStylesheet('/tcc-ecommerce-theme/css/tcc-ecommerce-theme.css');
+$this->headScript()->prependFile('/vendor/jquery/plugins/form/js/jquery.form.js');
+$this->headScript()->prependFile('/js/claim-account.js');
 ?>
 
 <style>
@@ -157,6 +159,14 @@ td {
 
 <div class="row" style="height: 55px;">
     <div class="span6">
+        <div id="claim-account" style="height: 55px;">
+            <form action="/user/claim-account" method="POST" id="claim-account-form">
+                <input type="hidden" name="order_id" value="<?=$order_id ?>" />
+                Password: <input type="password" name="password" id="password" />
+                <button type="submit" class="green">Claim Account</button>
+            </form>
+        </div>
+        <div id="account-claimed" style="display: none; height: 55px;">Your account has been regstered.</div>
     <!--
         <div style="padding: 20px; background-color: #2384c6; margin-left: 10px;
 height: 70px;

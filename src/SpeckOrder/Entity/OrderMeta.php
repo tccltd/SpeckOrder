@@ -30,21 +30,29 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
 //         }
     }
 
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
     public function setCustomerTitle($title)
     {
         $this->customer['title'] = $title;
+
         return $this;
     }
 
     public function setCustomerFirstName($firstName)
     {
         $this->customer['firstName'] = $firstName;
+
         return $this;
     }
 
     public function setCustomerLastName($lastName)
     {
         $this->customer['lastName'] = $lastName;
+
         return $this;
     }
 
@@ -54,18 +62,21 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
 
         $this->setCustomerFirstName($firstName)
              ->setCustomerLastName($lastName);
+
         return $this;
     }
 
     public function setCustomerTelephone($telephone)
     {
         $this->customer['telephone'] = $telephone;
+
         return $this;
     }
 
     public function setCustomerEmail($email)
     {
         $this->customer['email'] = $email;
+
         return $this;
     }
 
@@ -77,30 +88,35 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
     public function setCustomerAddress($address)
     {
         $this->customer['address'] = $address;
+
         return $this;
     }
 
     public function setCustomerCompanyName($companyName)
     {
         $this->customer['companyName'] = $companyName;
+
         return $this;
     }
 
     public function setCustomerJobTitle($jobTitle)
     {
         $this->customer['jobTitle'] = $jobTitle;
+
         return $this;
     }
 
     public function setCustomerCompanySize($companySize)
     {
         $this->customer['companySize'] = $companySize;
+
         return $this;
     }
 
     public function setBillingTitle($title)
     {
         $this->billing['title'] = $title;
+
         return $this;
     }
 
@@ -108,12 +124,14 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
     public function setBillingFirstName($firstName)
     {
         $this->billing['firstName'] = $firstName;
+
         return $this;
     }
 
     public function setBillingLastName($lastName)
     {
         $this->billing['lastName'] = $lastName;
+
         return $this;
     }
 
@@ -135,12 +153,14 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
     public function setBillingTelephone($telephone)
     {
         $this->billing['telephone'] = $telephone;
+
         return $this;
     }
 
     public function setBillingEmail($email)
     {
         $this->billing['email'] = $email;
+
         return $this;
     }
 
@@ -152,6 +172,7 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
     public function setBillingAddress($address)
     {
         $this->billing['address'] = $address;
+
         return $this;
     }
 
@@ -159,20 +180,16 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
     public function setPaymentDue($paymentDue)
     {
         $this->payment['due'] = $paymentDue;
+
         return $this;
     }
 
     public function setPaymentMethod($paymentMethod)
     {
         $this->payment['method'] = $paymentMethod;
+
         return $this;
     }
-
-
-
-
-
-
 
     public function offsetExists($offset)
     {
