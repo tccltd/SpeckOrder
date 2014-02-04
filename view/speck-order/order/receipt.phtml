@@ -143,51 +143,29 @@ td {
 
 </style>
 
-<!--
-<div class="row">
-    <div class="span12" style="text-align: center; font-size: 30px; padding: 20px 0;">
-        <div style="/*border: 2px dashed #ddddff; */margin: 0 20px; padding: 40px">
-            Your order is complete - thank you.
-        </div>
-    </div>
-</div>
-
-
-</div><img src="/img/layout/page-shadow.png" id="pageShadow" class="container"><div id="page" class="container">
--->
-
-
-<div class="row" style="height: 55px;">
+<div class="row" style="line-height: 100px;">
     <div class="span6">
-        <div id="claim-account" style="height: 55px;">
+<?php if ($user->isTransient()): ?>
+        <div id="claim-account" style="margin-left: 20px;">
             <form action="/user/claim-account" method="POST" id="claim-account-form">
                 <input type="hidden" name="order_id" value="<?=$order_id ?>" />
-                Password: <input type="password" name="password" id="password" />
-                <button type="submit" class="green">Claim Account</button>
+                Password: <input type="password" name="password" id="password" style="margin-bottom: 0; line-height: 20px;" />
+                <button type="submit" class="green" style="padding: 8px; margin-top: 0;">Create Account</button>
             </form>
         </div>
-        <div id="account-claimed" style="display: none; height: 55px;">Your account has been regstered.</div>
-    <!--
-        <div style="padding: 20px; background-color: #2384c6; margin-left: 10px;
-height: 70px;
-color: #fff;
-font-weight: 600;">
-            <div style="display: inline-block; margin-top: 10px; height: 25px; line-height: 25px;">+44 (0)1477 500 011</div>
-            <div style="display: inline-block; margin-top: 10px; height: 25px; line-height: 25px;">contact@tcc-net.com</div>
-            <div style="margin-bottom: 10px; height: 35px; line-height: 35px">Aspen House, Newcastle Road, Sandbach, Cheshire, CW11 1FY</div>
+        <div id="account-claimed" style="display: none; margin-left: 20px;">Your account has been regstered.</div>
+<?php endif; ?>
         </div>
-         -->
-    </div>
-    <div class="span6" style="position: relative">
-        <img src="/img/layout/logo-tcc.png" style="position: absolute; top: 20px; right: 20px; width: 200px;" />
+    <div class="span6" style="text-align: right;">
+        <img src="/img/layout/logo-tcc.png" style="margin-right: 20px; width: 200px;" />
     </div>
 </div>
 
-<hr style="margin: 30px 10px; border: none; height: 4px; background-image: url(/img/layout/dash-bcbdc0.png); background-repeat: repeat-x;" />
+<hr style="margin: 0 10px; border: none; border-bottom: 2px dashed #dedede;" />
 
 <div class="row">
     <div class="span12">
-        <p style="padding: 0 20px; margin-top: -20px; margin-bottom: 20px;">Thank you for your order, which is detailed below.</p>
+        <p style="padding: 0 20px; margin-top: 20px; margin-bottom: 20px;">Thank you for your order, which is detailed below.</p>
     </div>
 </div>
 
@@ -223,23 +201,7 @@ font-weight: 600;">
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-<hr style="margin: 30px 10px; border: none; height: 4px; background-image: url(/img/layout/dash-bcbdc0.png); background-repeat: repeat-x;" />
-
-
-
-
-
+<hr style="margin: 0 10px 20px 10px; border: none; border-bottom: 2px dashed #dedede;" />
 
 <div class="row">
     <div class="span12">

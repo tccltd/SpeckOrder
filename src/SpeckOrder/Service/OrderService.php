@@ -3,6 +3,8 @@
 namespace SpeckOrder\Service;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use SpeckOrder\Entity\OrderInterface as OrderEntityInterface;
 use SpeckOrder\Entity\OrderAddress;
@@ -13,8 +15,10 @@ use SpeckAddress\Entity\Address;
 //use SpeckOrder\Entity\OrderInterface;
 //use SpeckOrder\Entity\OrderLineInterface;
 
-class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterface
+class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInterface// ,OrderServiceInterface
 {
+    use EventManagerAwareTrait;
+
     protected $serviceLocator;
 
     protected $orderMapper;
@@ -117,6 +121,13 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
    {
         $this->getOrderMapper()->persist($order);
         $this->getOrderLineMapper()->persistFromOrder($order);
+        $this->getEventManager()->trigger(
+            OrderEvent::EVENT_ORDER_PERSIST_POST,
+            $this,
+            array('order' => $order)
+        );
+
+
         return $this;
    }
 //
@@ -142,9 +153,9 @@ class OrderService implements ServiceLocatorAwareInterface// ,OrderServiceInterf
                 'type'        => 'CC',
                 'description' => 'Credit / Debit Card',
             ],
-        	'totalGross' => 0,
-        	'totalTax'   => 0,
-        	'totalNet'   => 0,
+            'totalGross' => 0,
+            'totalTax'   => 0,
+            'totalNet'   => 0,
         ];
 
         $items = [];

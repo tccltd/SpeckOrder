@@ -4,5 +4,6 @@ namespace SpeckOrder\Service;
 
 class OrderEvent
 {
-     const EVENT_ORDER_PERSIST = "orderPersist";
+     const EVENT_ORDER_PERSIST      = "orderPersist";
+     const EVENT_ORDER_PERSIST_POST = "orderPersist.post";
 }

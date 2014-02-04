@@ -69,8 +69,9 @@ class OrderController extends AbstractActionController
         $receiptData = $this->getOrderService()->getReceiptData($this->params()->fromRoute('id'));
 
         return [
-            'order' => $receiptData,
+            'order'    => $receiptData,
             'order_id' => $this->params()->fromRoute('id'),
+            'user'     => $this->zfcUserAuthentication()->getIdentity(),
         ];
     }
 
