@@ -149,10 +149,7 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
 
         $receiptData = [
             'number'     => $order->getId(),
-            'payment'    => [
-                'type'        => 'CC',
-                'description' => 'Credit / Debit Card',
-            ],
+            'createDate' => $order->getCreated(),
             'totalGross' => 0,
             'totalTax'   => 0,
             'totalNet'   => 0,

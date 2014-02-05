@@ -141,6 +141,15 @@ td {
     margin-right: -15px;
 }
 
+.formatted-address span {
+    display: block;
+}
+
+.formatted-address span.name {
+    display: none;
+}
+
+
 </style>
 
 <div class="row" style="line-height: 100px;">
@@ -178,12 +187,13 @@ td {
 
     <div class="span3">
         <div style="margin-right: -15px; background-color: #404040; height: 40px; line-height: 40px;">
-            <span style="color: #a7a9ac; margin-left: 10px;">DATE:</span> <span>20/12/2013</span>
+            <span style="color: #a7a9ac; margin-left: 10px;">DATE:</span> <span><?=$order['createDate']->format('d/m/Y')?></span>
         </div>
     </div>
 
     <div class="span3" style="background-color: #404040; height: 40px; line-height: 40px;">
-        <span style="color: #a7a9ac; margin-left: 10px;">DUE:</span> <span><?= $order['meta']['payment']['method'] == 'cc' ? 'PAID' : 'NOW'; ?></span>
+        <span style="color: #a7a9ac; margin-left: 10px;">DUE:</span>
+        <span><?= $order['meta']['payment']['method'] == 'cc' ? 'PAID' : ($order['meta']['payment']['due'] == date('Ymd') ? 'NOW' : date('d/m/Y', strtotime($order['meta']['payment']['due']))); ?></span>
     </div>
 </div>
 
@@ -195,7 +205,7 @@ td {
 
             <div class="detail">
                 <div class="name"><? //= $order['meta']['billing']['title'] ?> <?= $order['meta']['billing']['firstName'] ?> <?= $order['meta']['billing']['lastName'] ?></div>
-                <div class="address"><?= nl2br($order['meta']['billing']['address']) ?></div>
+                <div class="address"><?=$this->formattedAddress($order['meta']['billing']['address']) ?></div>
             </div>
         </div>
     </div>
@@ -363,7 +373,7 @@ td {
                 <tbody>
                     <tr>
                         <td>Address:</td>
-                        <td><?= nl2br($order['meta']['customer']['address']); ?></td>
+                        <td><?=$this->formattedAddress($order['meta']['customer']['address']) ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -376,7 +386,7 @@ td {
                 <tbody>
                     <tr>
                         <td>Address:</td>
-                        <td><?= nl2br($order['meta']['billing']['address']); ?></td>
+                        <td><?=$this->formattedAddress($order['meta']['billing']['address']) ?></td>
                     </tr>
                 </tbody>
             </table>
