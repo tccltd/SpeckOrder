@@ -5,6 +5,7 @@ namespace SpeckOrder\Controller;
 use SpeckOrder\Service\OrderService;
 use Zend\Mvc\Controller\AbstractActionController;
 use SpeckOrder\Entity\OrderInterface;
+use Zend\View\Model\ViewModel;
 
 class OrderController extends AbstractActionController
 {
@@ -67,6 +68,16 @@ class OrderController extends AbstractActionController
     {
         // Retrieve the order data required to create a receipt using the supplied order id.
         $receiptData = $this->getOrderService()->getReceiptData($this->params()->fromRoute('id'));
+
+        $user = $this->zfcUserAuthentication()->getIdentity();
+
+        // Check the identity of the user against the order if no match send to a 403
+        if(!isset($user) || $receiptData['customerId'] != $user->getId()) {
+            $this->getResponse()->setStatusCode(403);
+            $view = new ViewModel();
+            $view->setTemplate('error/403');
+            return $view;
+        }
 
         return [
             'order'    => $receiptData,

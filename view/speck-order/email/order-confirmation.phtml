@@ -230,14 +230,14 @@ $linkBase = 'http://www.tcc-net.com';
                     <td colspan="2" style="font-weight: bold">Invoice Details</td>
                 </tr>
                 <tr>
-                    <td style="width: 130px"><?php if ($order['payment']['type'] == 'CC'): ?>Billing<?php else: ?>Invoice<?php endif;?> Name</td>
+                    <td style="width: 130px"><?php if ($order['meta']['payment']['method'] == 'cc'): ?>Billing<?php else: ?>Invoice<?php endif;?> Name</td>
                     <td><?= $order['meta']['billing']['firstName'] ?> <?= $order['meta']['billing']['lastName']; ?></td>
                 </tr>
                 <tr>
-                    <td style="width: 130px"><?php if ($order['payment']['type'] == 'CC'): ?>Billing<?php else: ?>Invoice<?php endif;?> Telephone</td>
+                    <td style="width: 130px"><?php if ($order['meta']['payment']['method'] == 'cc'): ?>Billing<?php else: ?>Invoice<?php endif;?> Telephone</td>
                     <td><?= $order['meta']['billing']['telephone']; ?></td>
                 </tr>
-<?php if($order['payment']['type'] == 'INVOICE'): ?>
+<?php if($order['meta']['payment']['method'] == 'invoice'): ?>
                 <tr>
                     <td style="width: 130px">Contact Email</td>
                     <td><?= $order['meta']['billing']['email']; ?></td>
@@ -254,7 +254,7 @@ $linkBase = 'http://www.tcc-net.com';
                 </tr>
                 <tr>
                     <td style="width: 130px">Payment Type</td>
-                    <td><?= $order['payment']['description']; ?></td>
+                    <td><?=$order['meta']['payment']['method'] == 'cc' ? 'Credit / Debit Card' : 'Invoice' ?></td>
                 </tr>
                 <tr>
                     <td colspan="2" id="nameFieldHeader" style="font-weight: bold; padding-top: 1.2em">Registered Billing Address</td>

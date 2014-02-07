@@ -1,6 +1,8 @@
 <?php
 $this->headLink()->appendStylesheet('/tcc-ecommerce-theme/css/tcc-ecommerce-theme.css');
 $this->headScript()->prependFile('/vendor/jquery/plugins/form/js/jquery.form.js');
+$this->headScript()->prependFile('/vendor/jquery/plugins/validate/additional-methods.js');
+$this->headScript()->prependFile('/vendor/jquery/plugins/validate/jquery.validate.js');
 $this->headScript()->prependFile('/js/claim-account.js');
 ?>
 
@@ -149,12 +151,17 @@ td {
     display: none;
 }
 
+label.error {
+    left: 35%;
+    margin-top: 11px;
+}
+
 
 </style>
 
 <div class="row" style="line-height: 100px;">
     <div class="span6">
-        <h2 style="margin: 0 0 0 20px; line-height: 100px; font-size: 40px; font-weight: 200;">ORDER CONFIRMATION</h2>
+        <h2 style="margin: 0 0 0 20px; line-height: 100px; font-size: 34px; font-weight: 200;">Order Confirmation</h2>
     </div>
     <div class="span6" style="text-align: right;">
         <img src="/img/layout/logo-tcc.png" style="margin-right: 20px; width: 200px;" />
@@ -173,7 +180,7 @@ td {
         <p style="padding: 0 20px; margin-top: 20px; margin-bottom: 20px;">
             You chose to checkout as a guest user; if you would like to create a full user account then please enter a password below. A TCC account
             makes future purchases significantly easier by allowing you to recall saved customer details, delegates and addresses.  Oh, and don't
-            worry, we will not pass or sell on your email address to others (see our <a href="<?=$this->url('privacy-policy',[],[],[],true);?>">privacy policy</a> for details).
+            worry, we will not pass or sell on your information to others (see our <a href="<?=$this->url('privacy-policy',[],[],[],true);?>">privacy policy</a> for details).
         </p>
 <?php endif; ?>
     </div>
@@ -184,7 +191,7 @@ td {
         <div id="claim-account" style="margin: 20px 20px 40px 20px; text-align: center;">
             <form action="/user/claim-account" method="POST" id="claim-account-form">
                 <input type="hidden" name="order_id" value="<?=$order_id ?>" />
-                Password: <input type="password" name="password" id="password" style="margin-bottom: 0; line-height: 20px;" />
+                Password: <input type="password" name="password" id="password" required="required" pattern="^\s*\S.{4,}\S\s*$" data-msg-pattern="Please enter at least six characters." style="margin-bottom: 0; line-height: 20px;" />
                 <button type="submit" class="green" style="padding: 8px; margin-top: 0;">Create Account</button>
             </form>
         </div>

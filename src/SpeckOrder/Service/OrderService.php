@@ -150,6 +150,7 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
         $receiptData = [
             'number'     => $order->getId(),
             'createDate' => $order->getCreated(),
+            'customerId' => $order->getCustomerId(),
             'totalGross' => 0,
             'totalTax'   => 0,
             'totalNet'   => 0,
