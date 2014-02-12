@@ -58,6 +58,8 @@ class OrderController extends AbstractActionController
             );
         }
 
+        // Redirect, using flash messenger to indicate that the order has just been stored.
+        $this->flashMessenger()->setNamespace(__NAMESPACE__ . '.isNewOrder')->addMessage(true);
         $this->redirect()->toRoute('order/receipt', [ 'id' => $order->getId() ]);
     }
 
@@ -66,6 +68,11 @@ class OrderController extends AbstractActionController
      */
     public function receiptAction()
     {
+        // Does this receipt immediately follow the completion and storing of an order?
+        $isNewOrder = count($this->flashMessenger()->setNamespace(__NAMESPACE__ . '.isNewOrder')->getMessages()) > 0
+            ? $this->flashMessenger()->setNamespace(__NAMESPACE__ . '.isNewOrder')->getMessages()[0]
+            : false;
+
         // Retrieve the order data required to create a receipt using the supplied order id.
         $receiptData = $this->getOrderService()->getReceiptData($this->params()->fromRoute('id'));
 
@@ -80,9 +87,10 @@ class OrderController extends AbstractActionController
         }
 
         return [
-            'order'    => $receiptData,
-            'order_id' => $this->params()->fromRoute('id'),
-            'user'     => $this->zfcUserAuthentication()->getIdentity(),
+            'isNewOrder' => $isNewOrder,
+            'order'      => $receiptData,
+            'order_id'   => $this->params()->fromRoute('id'),
+            'user'       => $this->zfcUserAuthentication()->getIdentity(),
         ];
     }
 
