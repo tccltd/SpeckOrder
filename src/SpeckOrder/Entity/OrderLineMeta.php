@@ -5,10 +5,16 @@ namespace SpeckOrder\Entity;
 class OrderLineMeta implements \ArrayAccess
 {
     protected $arrayProperties = [
-	   'delegates' => true,
+       'delegates' => true,
+       'additionalInformation' => true,
+       'productId',
     ];
-    
+
     protected $delegates = array();
+
+    protected $productId;
+
+    protected $additionalInformation = array();
 
     public function __construct(array $config = array())
     {
@@ -42,15 +48,29 @@ class OrderLineMeta implements \ArrayAccess
             'email'     => $email,
         );
     }
-    
-    
-    
-    
+
+    public function setProductId($productId)
+    {
+        $this->productId = $productId;
+        return $this;
+    }
+
+    public function getProductId()
+    {
+        return $this->productId;
+    }
+
+    public function addAdditionalInformation($title, $information)
+    {
+         $this->additionalInformation[$title] = $information;
+    }
+
+
     public function offsetExists($offset)
     {
         return isset($this->arrayProperties[$offset]) && $this->arrayProperties[$offset];
     }
-    
+
     public function offsetGet($offset)
     {
         if($this->offsetExists($offset)) {
@@ -59,12 +79,12 @@ class OrderLineMeta implements \ArrayAccess
         // Should probably throw an exception...
         return false;
     }
-    
+
     public function offsetSet($offset, $value)
     {
         // Do nothing yet.
     }
-    
+
     public function offsetUnset($offset)
     {
         // Do nothing yet.
