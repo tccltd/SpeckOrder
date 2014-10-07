@@ -11,6 +11,7 @@ use SpeckOrder\Entity\OrderAddress;
 use Zend\Stdlib\ArrayUtils;
 use SpeckOrder\Entity\OrderMeta;
 use SpeckAddress\Entity\Address;
+use SpeckCartVoucher\Entity\CartVoucherMeta;
 //use SpeckOrder\Entity\InvoiceInterface;
 //use SpeckOrder\Entity\OrderInterface;
 //use SpeckOrder\Entity\OrderLineInterface;
@@ -157,6 +158,7 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
         ];
 
         $items = [];
+        $itemCount = 0;
         foreach($order as $item) {
             $lineTotalGross = $item->getPrice() * $item->getQuantityInvoiced();
             $lineTotalTax   = $item->getTax() * $item->getQuantityInvoiced();
@@ -178,6 +180,11 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
                 'meta'        => $item->getMeta(),
             ];
 
+            // Don't count vouchers in the product count
+            if(!$item->getMeta()->getIsVoucher()) {
+                $itemCount++;
+            }
+
             // Update order totals.
             $receiptData['totalGross'] += $lineTotalGross;
             $receiptData['totalTax']   += $lineTotalTax;
@@ -185,7 +192,7 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
         }
 
         $receiptData['items']     = $items;
-        $receiptData['itemCount'] = count($items);
+        $receiptData['itemCount'] = $itemCount;
         $receiptData['meta']      = $order->getMeta();
 
         return $receiptData;

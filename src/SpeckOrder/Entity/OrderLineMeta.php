@@ -5,9 +5,10 @@ namespace SpeckOrder\Entity;
 class OrderLineMeta implements \ArrayAccess
 {
     protected $arrayProperties = [
-       'delegates' => true,
-       'additionalInformation' => true,
-       'productId',
+        'delegates' => true,
+        'additionalInformation' => true,
+        'productId' => true,
+        'isVoucher' => true,
     ];
 
     protected $delegates = array();
@@ -15,6 +16,8 @@ class OrderLineMeta implements \ArrayAccess
     protected $productId;
 
     protected $additionalInformation = array();
+
+    protected $isVoucher = false;
 
     public function __construct(array $config = array())
     {
@@ -58,6 +61,17 @@ class OrderLineMeta implements \ArrayAccess
     public function getProductId()
     {
         return $this->productId;
+    }
+
+    public function setIsVoucher($isVoucher = false)
+    {
+        $this->isVoucher = $isVoucher;
+        return $this;
+    }
+
+    public function getIsVoucher()
+    {
+        return $this->isVoucher;
     }
 
     public function addAdditionalInformation($title, $information)
