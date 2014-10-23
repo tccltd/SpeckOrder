@@ -51,6 +51,7 @@ class OrderController extends AbstractActionController
             $this->getOrderService()->persist($order);
 
             $receiptData = $this->getOrderService()->getReceiptData($order);
+
             $eventResult = $this->getEventManager()->trigger(
                 'storeAction.post',
                 $this,
