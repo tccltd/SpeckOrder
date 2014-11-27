@@ -26,7 +26,7 @@
         "zf-commons/zfc-base": "0.1.*",
         "speckcommerce/speck-address": "dev-master",
         "speckcommerce/speck-cart": "dev-master",
-        "tccltd/tcc-abstract-module": "0.*",
+        "tccltd/tcc-abstract-module": "~1.0",
         "tccltd/speck-checkout-order": "dev-master"
     },
     "require-dev": {
