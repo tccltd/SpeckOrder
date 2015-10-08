@@ -5,15 +5,18 @@ namespace SpeckOrder\Entity;
 class OrderLineMeta implements \ArrayAccess
 {
     protected $arrayProperties = [
-       'delegates' => true,
-       'additionalInformation' => true,
-       'additionalMetadata' => true,
-       'productId' => true,
+        'delegates' => true,
+        'additionalInformation' => true,
+        'additionalMetadata' => true,
+        'productId' => true,
+        'itemNumber' => true,
     ];
 
     protected $delegates = array();
 
     protected $productId;
+
+    protected $itemNumber;
 
     protected $additionalInformation = array();
 
@@ -63,6 +66,17 @@ class OrderLineMeta implements \ArrayAccess
         return $this->productId;
     }
 
+    public function setItemNumber($itemNumber)
+    {
+        $this->itemNumber = $itemNumber;
+        return $this;
+    }
+
+    public function getItemNumber()
+    {
+        return $this->itemNumber;
+    }
+
     public function addAdditionalInformation($title, $information)
     {
          $this->additionalInformation[$title] = $information;
@@ -77,6 +91,14 @@ class OrderLineMeta implements \ArrayAccess
     {
         if(isset($this->additionalMetadata[$key])) {
             unset($this->additionalMetadata[$key]);
+        }
+    }
+
+    public function getAdditionalMeta($key=null) {
+        if(isset($key)) {
+            return isset($this->additionalMetadata[$key]) ? $this->additionalMetadata[$key] : false;
+        } else {
+            return $this->additionalMetadata;
         }
     }
 
