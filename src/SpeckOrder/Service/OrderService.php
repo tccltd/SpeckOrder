@@ -7,13 +7,7 @@ use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use SpeckOrder\Entity\OrderInterface as OrderEntityInterface;
-use SpeckOrder\Entity\OrderAddress;
 use Zend\Stdlib\ArrayUtils;
-use SpeckOrder\Entity\OrderMeta;
-use SpeckAddress\Entity\Address;
-//use SpeckOrder\Entity\InvoiceInterface;
-//use SpeckOrder\Entity\OrderInterface;
-//use SpeckOrder\Entity\OrderLineInterface;
 
 class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInterface// ,OrderServiceInterface
 {
@@ -156,8 +150,34 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
             'totalNet'   => 0,
         ];
 
+        $recursiveDescription = function($descriptions) use (&$recursiveDescription) {
+
+            $name = [];
+            foreach($descriptions as $description) {
+                $name[] = $description['name'];
+                if(isset($description['children'])) {
+                    $name = array_merge($name, $recursiveDescription($description['children']));
+                }
+            }
+
+            return $name;
+        };
+
         $items = [];
         foreach($order as $item) {
+            $description = $item->getDescription();
+            $options = [];
+            if(isset($description['children'])) {
+                $options = $recursiveDescription($item->getDescription()['children']);
+            }
+
+            if(!$options) {
+                $options = [];
+                foreach($item->getMeta()->getAdditionalMeta() as $meta) {
+                    $options[] = $meta->getIdentifier();
+                }
+            }
+
             $lineTotalGross = $item->getPrice() * $item->getQuantityInvoiced();
             $lineTotalTax   = $item->getTax() * $item->getQuantityInvoiced();
             $lineTotalNet   = $lineTotalGross + $lineTotalTax;
@@ -165,8 +185,8 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
             $items[] = [
                 // TODO: Update price stuff to match new stuff for CartItem entity.
                 // TODO: Use new separate functions for recursive descriptions?
-                'product'     => trim(strtok($item->getDescription(), '-')),
-                'options'     => trim(strtok('')),
+                'product'     => $item->getDescription()['name'],
+                'options'     => $options,
                 'priceGross'  => $item->getPrice(),
                 'tax'         => $item->getTax(),
                 'priceNet'    => $item->getPrice() + $item->getTax(),

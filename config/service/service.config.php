@@ -15,13 +15,11 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 use TccPayment\Hydrator\Strategy\DateTime;
 use TccPayment\Hydrator\Filter\KeyFilter;
 use SpeckOrder\Mapper\OrderAddressMapper;
-use SpeckOrder\Entity\OrderAddress;
 use SpeckOrder\Mapper\OrderLineMapper;
 use Zend\Stdlib\Hydrator\Strategy\SerializableStrategy;
 use Zend\Serializer\Adapter\PhpSerialize;
-use Zend\Stdlib\Hydrator\Filter\MethodMatchFilter;
-use Zend\Stdlib\Hydrator\Filter\FilterComposite;
 use SpeckOrder\Entity\OrderLine;
+use SpeckOrder\Hydrator\Strategy\JsonStrategy;
 
 return array(
     'aliases' => array(
@@ -115,9 +113,8 @@ return array(
 
         'speckorder_orderLineMapper' => function ($sm) {
             $hydrator = new ClassMethods();
-//            $hydrator->addFilter('getOrder', new MethodMatchFilter('getOrder', FilterComposite::CONDITION_AND));
-//                      ->addFilter('getOrder', new MethodMatchFilter('getOrder', FilterComposite::CONDITION_AND));
             $hydrator->addStrategy('meta', new SerializableStrategy(new PhpSerialize()));
+            $hydrator->addStrategy('description', new JsonStrategy(null, null, true,null, null));
 
             $orderLineMapper = new OrderLineMapper();
             $orderLineMapper->setHydrator($hydrator);
