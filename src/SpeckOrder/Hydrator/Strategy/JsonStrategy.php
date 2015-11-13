@@ -205,6 +205,6 @@ class JsonStrategy implements StrategyInterface
      */
     public function extract($value)
     {
-        return empty($value) ? null : json_encode($value, $this->encodeOptions, $this->encodeDepth);
+        return empty($value) ? null : json_encode($value, $this->encodeOptions);
     }
 }
