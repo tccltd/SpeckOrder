@@ -6,7 +6,7 @@ use SpeckOrder\Entity\OrderInterface as OrderEntityInterface;
 use Zend\Db\Sql\Where;
 use ZfcBase\Mapper\AbstractDbMapper;
 
-class Order extends AbstractDbMapper implements OrderInterface
+class OrderMapper extends AbstractDbMapper implements OrderInterface
 {
     protected $idField = 'id';
     protected $tableName = 'order_order';

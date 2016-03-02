@@ -4,6 +4,10 @@ namespace SpeckOrder\Entity;
 
 interface OrderLineInterface
 {
+    public function getId();
+
+    public function setId($id);
+
     public function getOrderId();
 
     public function setOrderId($orderId);
@@ -23,4 +27,8 @@ interface OrderLineInterface
     public function isInvoiceable();
 
     public function setInvoiceable($invoiceable);
+
+    public function getPrice($includeTax=false, $recursive=false);
+
+    public function getTax($recursive=false);
 }
