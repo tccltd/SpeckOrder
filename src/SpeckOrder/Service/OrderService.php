@@ -2,14 +2,14 @@
 
 namespace SpeckOrder\Service;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use SpeckOrder\Entity\OrderLineInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerAwareTrait;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use SpeckOrder\Entity\OrderInterface as OrderEntityInterface;
+use SpeckOrder\Entity\OrderInterface;
 use Zend\Stdlib\ArrayUtils;
 
-class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInterface// ,OrderServiceInterface
+class OrderService implements
+    EventManagerAwareInterface
 {
     use EventManagerAwareTrait;
 
@@ -20,24 +20,6 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
     protected $orderAddressMapper;
 
     protected $orderLineMapper;
-
-    /**
-     * @return serviceLocator
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-    /**
-     * @param $serviceLocator
-     * @return self
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-        return $this;
-    }
 
     public function getAllFlags()
     {
@@ -73,46 +55,14 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
         return $tags;
     }
 
-//    /**
-//     * findById
-//     *
-//     * @param int $id
-//     * @return OrderEntityInterface|null
-//     */
-//    public function findById($id){}
-//
-//    /**
-//     * fundByCustomerId
-//     *
-//     * @param mixed $id
-//     * @return OrderEntityInterface[]
-//     */
-//    public function findByCustomerId($id){}
-//
-//    /**
-//     * findByInvoice
-//     *
-//     * @param InvoiceInterface $invoice
-//     * @return OrderEntityInterface|null
-//     */
-//    public function findByInvoice(InvoiceInterface $invoice){}
-//
-//    /**
-//     * findByOrderLine
-//     *
-//     * @param OrderLineInterface $orderLine
-//     * @return OrderLineInterface|null
-//     */
-//    public function findByOrderLine(OrderLineInterface $orderLine){}
-//
-   /**
-    * persist
-    *
-    * @param OrderEntityInterface $order
-    * @return OrderServiceInterface
-    */
-   public function persist(OrderEntityInterface $order)
-   {
+    /**
+     * persist
+     *
+     * @param OrderEntityInterface $order
+     * @return OrderServiceInterface
+     */
+    public function persist(OrderInterface $order)
+    {
         $this->getOrderMapper()->persist($order);
         $this->getOrderLineMapper()->persistFromOrder($order);
         $this->getEventManager()->trigger(
@@ -124,20 +74,10 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
 
         return $this;
    }
-//
-//    /**
-//     * persistLine
-//     *
-//     * @param OrderLineInterface $orderLine
-//     * @return OrderServiceInterface
-//     */
-//    public function persistLine(OrderLineInterface $orderLine){}
-
-
 
     public function getReceiptData($order)
     {
-        if(!$order instanceof OrderEntityInterface) {
+        if(!$order instanceof OrderInterface) {
             $order = $this->getOrder($order);
         }
 
@@ -145,82 +85,66 @@ class OrderService implements ServiceLocatorAwareInterface, EventManagerAwareInt
             'number'     => $order->getId(),
             'createDate' => $order->getCreated(),
             'customerId' => $order->getCustomerId(),
-            'totalGross' => 0,
-            'totalTax'   => 0,
-            'totalNet'   => 0,
+            'totalGross' => $order->getTotal(false, true),
+            'totalTax'   => $order->getTaxTotal(true),
+            'totalNet'   => $order->getTotal(true, true),
+            'meta'       => $order->getMeta(),
         ];
-
-        $recursiveDescription = function($descriptions) use (&$recursiveDescription) {
-
-            $name = [];
-            foreach($descriptions as $description) {
-                $name[] = $description['name'];
-                if(isset($description['children'])) {
-                    $name = array_merge($name, $recursiveDescription($description['children']));
-                }
-            }
-
-            return $name;
-        };
 
         $items = [];
         foreach($order as $item) {
-            $description = $item->getDescription();
-            $options = [];
-            if(isset($description['children'])) {
-                $options = $recursiveDescription($item->getDescription()['children']);
-            }
-
-            if(!$options) {
-                $options = [];
-                foreach($item->getMeta()->getAdditionalMeta() as $meta) {
-                    $options[] = $meta->getIdentifier();
-                }
-            }
-
-            $lineTotalGross = $item->getPrice() * $item->getQuantityInvoiced();
-            $lineTotalTax   = $item->getTax() * $item->getQuantityInvoiced();
-            $lineTotalNet   = $lineTotalGross + $lineTotalTax;
-
-            $items[] = [
-                // TODO: Update price stuff to match new stuff for CartItem entity.
-                // TODO: Use new separate functions for recursive descriptions?
-                'product'     => $item->getDescription()['name'],
-                'options'     => $options,
-                'priceGross'  => $item->getPrice(),
-                'tax'         => $item->getTax(),
-                'priceNet'    => $item->getPrice() + $item->getTax(),
-                'quantity'    => $item->getQuantityInvoiced(),
-                'totalGross'  => $lineTotalGross,
-                'totalTax'    => $lineTotalTax,
-                'totalNet'    => $lineTotalNet,
-
-                'meta'        => $item->getMeta(),
-            ];
-
-            // Update order totals.
-            $receiptData['totalGross'] += $lineTotalGross;
-            $receiptData['totalTax']   += $lineTotalTax;
-            $receiptData['totalNet']   += $lineTotalNet;
+            $items[] = $this->getReceiptDataFromLine($item);
         }
 
         $receiptData['items']     = $items;
         $receiptData['itemCount'] = count($items);
-        $receiptData['meta']      = $order->getMeta();
 
         return $receiptData;
     }
 
+    protected function getReceiptDataFromLine(OrderLineInterface $line)
+    {
+        $options = [];
+        foreach($line->getMeta()->getAdditionalMeta() as $meta) {
+            $options[] = $meta->getIdentifier();
+        }
 
+        $lineTotalGross = $line->getExtPrice(false, false);
+        $lineTotalTax   = $line->getExtTax(false);
 
-       public function getOrder($id)
-       {
-           $order = $this->getOrderMapper()->findById($id);
-           $order->setItems(ArrayUtils::iteratorToArray($this->getOrderLineMapper()->fetchAllByOrderId($order->getId()), false));
+        $item = [
+            'product'     => $line->getDescription(),
+            'options'     => $options,
+            'priceGross'  => $line->getPrice(),
+            'tax'         => $line->getTax(),
+            'priceNet'    => $line->getPrice() + $line->getTax(),
+            'quantity'    => $line->getQuantityInvoiced(),
+            'totalGross'  => $lineTotalGross,
+            'totalTax'    => $lineTotalTax,
+            'totalNet'    => $lineTotalGross + $lineTotalTax,
+            'meta'        => $line->getMeta(),
+        ];
 
-           return $order;
-       }
+        $children = [];
+        foreach($line as $childLine) {
+            $children[] = $this->getReceiptDataFromLine($childLine);
+        }
 
+        $item['items'] = $children;
+        return $item;
+    }
+
+    /**
+     * @param $id
+     * @return OrderInterface
+     */
+    public function getOrder($id)
+    {
+        $order = $this->getOrderMapper()->findById($id);
+        $order->setItems(ArrayUtils::iteratorToArray($this->getOrderLineMapper()->fetchAllByOrderId($order->getId()), false));
+
+        return $order;
+    }
 
     public function getOrderMapper()
     {

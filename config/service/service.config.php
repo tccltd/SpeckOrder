@@ -9,7 +9,7 @@
  */
 
 use SpeckOrder\Service\OrderService;
-use SpeckOrder\Mapper\Order as OrderMapper;
+use SpeckOrder\Mapper\OrderMapper;
 use SpeckOrder\Entity\Order;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use TccPayment\Hydrator\Strategy\DateTime;
@@ -114,7 +114,6 @@ return array(
         'speckorder_orderLineMapper' => function ($sm) {
             $hydrator = new ClassMethods();
             $hydrator->addStrategy('meta', new SerializableStrategy(new PhpSerialize()));
-            $hydrator->addStrategy('description', new JsonStrategy(null, null, true,null, null));
 
             $orderLineMapper = new OrderLineMapper();
             $orderLineMapper->setHydrator($hydrator);

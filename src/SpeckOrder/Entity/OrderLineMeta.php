@@ -10,6 +10,8 @@ class OrderLineMeta implements \ArrayAccess
         'additionalMetadata' => true,
         'productId' => true,
         'itemNumber' => true,
+        'manufacturer' => true,
+        'productType' => true,
     ];
 
     protected $delegates = array();
@@ -18,22 +20,16 @@ class OrderLineMeta implements \ArrayAccess
 
     protected $itemNumber;
 
+    protected $manufacturer;
+
+    protected $productType;
+
     protected $additionalInformation = array();
 
     protected $additionalMetadata = array();
 
     public function __construct(array $config = array())
     {
-//         if (count($config)) {
-//            $this->parentOptionId   = isset($config['parent_option_id'])   ? $config['parent_option_id']   : null;
-//            $this->productId        = isset($config['product_id'])         ? $config['product_id']         : null;
-//            $this->itemNumber       = isset($config['item_number'])        ? $config['item_number']        : null;
-//            $this->parentOptionName = isset($config['parent_option_name']) ? $config['parent_option_name'] : null;
-//            $this->flatOptions      = isset($config['flat_options'])       ? $config['flat_options']       : array();
-//            $this->image            = isset($config['image'])              ? $config['image']              : null;
-//            $this->uom              = isset($config['uom'])                ? $config['uom']                : null;
-//             $this->productTypeId   = isset($config['product_type_id'])    ? $config['product_type_id']    : null;
-//         }
     }
 
     /**
@@ -75,6 +71,28 @@ class OrderLineMeta implements \ArrayAccess
     public function getItemNumber()
     {
         return $this->itemNumber;
+    }
+
+    public function getManufacturer()
+    {
+        return $this->manufacturer;
+    }
+
+    public function setManufacturer($manufacturer)
+    {
+        $this->manufacturer = $manufacturer;
+        return $this;
+    }
+
+    public function getProductType()
+    {
+        return $this->productType;
+    }
+
+    public function setProductType($productType)
+    {
+        $this->productType = $productType;
+        return $this;
     }
 
     public function addAdditionalInformation($title, $information)

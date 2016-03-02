@@ -1,101 +1,101 @@
 <?php
-return array(
-    'router' => array(
-        'routes' => array(
-            'order' => array(
+return [
+    'router' => [
+        'routes' => [
+            'order' => [
                 'type' => 'Literal',
-                'options' => array(
+                'options' => [
                     'route' => '/order',
-                ),
+                ],
                 'may_terminate' => false,
-                'child_routes' => array(
-                    'receipt' => array(
+                'child_routes' => [
+                    'receipt' => [
                         'type' => 'Segment',
-                        'options' => array(
+                        'options' => [
                             'route' => '/[:id]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'speckorder_orderController',
                                 'action'     => 'receipt',
-                            ),
-                        ),
-                    ),
-                    'process' => array(
+                            ],
+                        ],
+                    ],
+                    'process' => [
                         'type' => 'Literal',
-                        'options' => array(
+                        'options' => [
                             'route' => '/process',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'speckorder_orderController',
                                 'action'     => 'store',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            'zfcadmin' => array(
-                'child_routes' => array(
-                    'manage-orders' => array(
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'zfcadmin' => [
+                'child_routes' => [
+                    'manage-orders' => [
                         'type'    => 'Literal',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/manage-orders',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'order_management',
                                 'action'     => 'index',
-                            ),
-                        ),
-                    ),
-                    'manage-customers' => array(
+                            ],
+                        ],
+                    ],
+                    'manage-customers' => [
                         'type'    => 'Literal',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/manage-customers',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'order_management',
                                 'action'     => 'customers',
-                            ),
-                        ),
-                    ),
-                    'order' => array(
+                            ],
+                        ],
+                    ],
+                    'order' => [
                         'type'    => 'Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/order/:orderId',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'order_management',
                                 'action'     => 'order',
-                            ),
-                        ),
-                    ),
-                    'manage-order' => array(
+                            ],
+                        ],
+                    ],
+                    'manage-order' => [
                         'type'  => 'Literal',
-                        'options' => array(
+                        'options' => [
                             'route' => '/manage-order',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'order_management',
-                            ),
-                        ),
+                            ],
+                        ],
                         'may_terminate' => false,
-                        'child_routes' => array(
-                            'edit-address' => array(
+                        'child_routes' => [
+                            'edit-address' => [
                                 'type'    => 'Segment',
-                                'options' => array(
+                                'options' => [
                                     'route' => '/edit-address/:orderId',
-                                    'defaults' => array(
+                                    'defaults' => [
                                         'action' => 'editAddress',
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                    'manage-customer' => array(
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'manage-customer' => [
                         'type'    => 'Segment',
-                        'options' => array(
+                        'options' => [
                             'route'    => '/manage-customer/:orderId[/:actionName]',
-                            'defaults' => array(
+                            'defaults' => [
                                 'controller' => 'order_management',
                                 'action'     => 'customer',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
-);
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];

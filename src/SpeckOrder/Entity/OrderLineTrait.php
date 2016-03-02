@@ -5,6 +5,8 @@ namespace SpeckOrder\Entity;
 trait OrderLineTrait
 {
     protected $orderId;
+    protected $id;
+    protected $parentLineId;
     protected $quantityInvoiced;
     protected $quantityRefunded;
     protected $quantityShipped;
@@ -18,6 +20,28 @@ trait OrderLineTrait
     public function setOrderId($orderId)
     {
         $this->orderId = $orderId;
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getParentLineId()
+    {
+        return $this->parentLineId;
+    }
+
+    public function setParentLineId($parentLineId)
+    {
+        $this->parentLineId = $parentLineId;
         return $this;
     }
 
@@ -64,5 +88,4 @@ trait OrderLineTrait
         $this->invoiceable = $invoiceable;
         return $this;
     }
-
 }

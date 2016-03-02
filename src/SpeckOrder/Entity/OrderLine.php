@@ -13,11 +13,9 @@ use Zend\Stdlib\Hydrator\Filter\HasFilter;
 use Zend\Stdlib\Hydrator\Filter\GetFilter;
 use Zend\Stdlib\Hydrator\Filter\OptionalParametersFilter;
 
-class OrderLine implements OrderLineInterface, FilterProviderInterface //extends AbstractLineItem implements OrderLineInterface
+class OrderLine extends AbstractItemCollection implements OrderLineInterface, FilterProviderInterface
 {
     use OrderLineTrait;
-
-    //protected $id = 0;
 
     protected $order;
 
@@ -61,6 +59,10 @@ class OrderLine implements OrderLineInterface, FilterProviderInterface //extends
         }
 
         $this->orderId = $id;
+
+        foreach($this->getItems() as $lineItem) {
+            $lineItem->setOrderId($id);
+        }
         return $this;
     }
 
@@ -85,12 +87,11 @@ class OrderLine implements OrderLineInterface, FilterProviderInterface //extends
         $this->order = $order;
         if ($order === null) {
             $this->orderId = null;
+        } else {
+            $this->setOrderId($order->getId());
         }
         return $this;
     }
-
-
-
 
     public function getDescription()
     {
@@ -100,35 +101,44 @@ class OrderLine implements OrderLineInterface, FilterProviderInterface //extends
     public function setDescription($description)
     {
         $this->description = $description;
-
-        // Fluent interface.
         return $this;
     }
     
-    public function getPrice()
+    public function getPrice($includeTax=false, $recursive=false)
     {
-        return $this->price;
+        $price = $this->price + ($includeTax ? $this->getTax() : 0);
+
+        if ($recursive) {
+            foreach ($this->getItems() as $item) {
+                $price += $item->getPrice($includeTax, $recursive);
+            }
+        }
+        return $price;
     }
 
     public function setPrice($price)
     {
         $this->price = $price;
-
-        // Fluent interface.
         return $this;
     }
-    
-    public function getTax()
+
+    public function getTax($recursive=false)
     {
-    	return $this->tax;
+        $tax = $this->tax;
+
+        if($recursive) {
+            foreach($this->getItems() as $item) {
+                $tax += $item->getTax($recursive);
+            }
+        }
+
+        return $tax;
     }
     
     public function setTax($tax)
     {
-    	$this->tax = $tax;
-    
-    	// Fluent interface.
-    	return $this;
+        $this->tax = $tax;
+        return $this;
     }
 
     public function getMeta()
@@ -139,12 +149,76 @@ class OrderLine implements OrderLineInterface, FilterProviderInterface //extends
     public function setMeta(OrderLineMeta $meta)
     {
         $this->meta = $meta;
-
-        // Fluent interface.
         return $this;
     }
 
+    public function getExtPrice($includeTax=true, $recursive=false)
+    {
+        $price = $this->getPrice();
 
+        if($includeTax) {
+            $price += $this->getTax();
+        }
+
+        $price = $price * $this->getQuantityInvoiced();
+
+        if($recursive) {
+            foreach($this->getItems() as $item) {
+                $price += $item->getExtPrice($includeTax, $recursive);
+            }
+        }
+
+        return $price;
+    }
+
+    public function getExtTax($recursive=false)
+    {
+        $tax = $this->getTax() * $this->getQuantityInvoiced();
+
+        if($recursive) {
+            foreach($this->getItems() as $item) {
+                $tax += $item->getExtTax($recursive);
+            }
+        }
+
+        return $tax;
+    }
+
+    public function flatten(&$flatItems=[], $flattenTest)
+    {
+        /* @var $item \SpeckOrder\Entity\OrderLine */
+        foreach($this->getItems() as $item) {
+            $remove = $item->flatten($flatItems, $flattenTest);
+
+            if($remove) {
+                $item->setParent(null)->setParentLineId(null);
+                $this->removeItem($item->getId());
+            }
+        }
+
+        // If the flatten test is true or if the item is a top level item it needs adding
+        if($flattenTest($this) || $this->getParentLineId() === null) {
+            $flatItems[$this->getId()] = $this;
+            return true;
+        }
+
+        return false;
+    }
+
+    public function __clone()
+    {
+        $clonedItems = [];
+
+        foreach($this->getItems() as $item) {
+            /* @var $item \SpeckOrder\Entity\OrderLine */
+            /* @var $cloneItem \SpeckOrder\Entity\OrderLine */
+            $cloneItem = clone $item;
+            $cloneItem->setParent($this);
+            $clonedItems[$item->getId()] = $cloneItem;
+        }
+
+        $this->setItems($clonedItems);
+    }
 
     public function getFilter()
     {
@@ -158,6 +232,7 @@ class OrderLine implements OrderLineInterface, FilterProviderInterface //extends
             'quantityRefunded',
             'quantityShipped',
             'meta',
+            'parentLineId',
         );
 
         $filter = new FilterComposite();

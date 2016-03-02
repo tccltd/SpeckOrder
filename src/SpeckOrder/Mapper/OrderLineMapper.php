@@ -2,6 +2,10 @@
 
 namespace SpeckOrder\Mapper;
 
+use SpeckOrder\Entity\OrderLineInterface;
+use SpeckOrder\Service\OrderInterface;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
 use ZfcBase\Mapper\AbstractDbMapper;
 use SpeckOrder\Entity\OrderLine;
@@ -32,33 +36,56 @@ class OrderLineMapper extends AbstractDbMapper
         return $result;
     }
 
-    // TODO: Don't use OrderEntity, use OrderInterface
     public function persistFromOrder(OrderEntity $order)
     {
         foreach ($order as $line) {
-            $this->persist($line);
+            $result = $this->persist($line);
+            $line->setId($result->getGeneratedValue());
+            $this->persistChildren($line);
         }
         return $this;
     }
 
-    public function fetchAllByOrderId($orderId)
+    protected function persistChildren(OrderLineInterface $orderLine)
     {
-        $select = $this->getSelect()->where(array('order_id' => $orderId));
-        return $this->select($select);
+        foreach($orderLine as $line) {
+            $line->setParentLineId($orderLine->getId());
+            $result = $this->persist($line);
+            $line->setId($result->getGeneratedValue());
+            $this->persistChildren($line);
+        }
     }
 
-    /*
+    public function fetchAllByOrderId($orderId)
+    {
+        $hydrator = new OrderLineRecursiveHydrator();
+        $adapter = $this->getDbAdapter();
+        $statement = $adapter->createStatement();
+
+        $where = new Where();
+        $where->equalTo('order_id', $orderId);
+
+        $select = new Select();
+        $select->from($this->tableName)
+            ->order('parent_line_id ASC')
+            ->where($where)
+            ->prepareStatement($adapter, $statement);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet(ResultSet::TYPE_ARRAY);
+        $resultSet = $resultSet->initialize($result)->toArray();
+        $resultSet = $hydrator->hydrate($resultSet, $this->getEntityPrototype());
+
+        return $resultSet;
+    }
+
     public function findById($id)
     {
         $select = $this->getSelect();
+        $select->where(['id' => $id]);
 
-        $where = new Where;
-        $where->equalTo($this->addressIdField, $id);
-
-        $resultSet = $this->select($select->where($where));
+        $resultSet = $this->select($select);
         return $resultSet->current();
-    }*/
-
-
-    //public function fetch
+    }
 }

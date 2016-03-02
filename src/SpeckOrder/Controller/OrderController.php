@@ -2,7 +2,6 @@
 
 namespace SpeckOrder\Controller;
 
-use SpeckOrder\Service\OrderService;
 use Zend\Mvc\Controller\AbstractActionController;
 use SpeckOrder\Entity\OrderInterface;
 use Zend\View\Model\ViewModel;
@@ -74,8 +73,10 @@ class OrderController extends AbstractActionController
             ? $this->flashMessenger()->setNamespace(__NAMESPACE__ . '.isNewOrder')->getMessages()[0]
             : false;
 
+        $order = $this->getOrderService()->getOrder($this->params()->fromRoute('id'));
+
         // Retrieve the order data required to create a receipt using the supplied order id.
-        $receiptData = $this->getOrderService()->getReceiptData($this->params()->fromRoute('id'));
+        $receiptData = $this->getOrderService()->getReceiptData($order);
 
         $user = $this->zfcUserAuthentication()->getIdentity();
 
@@ -88,10 +89,11 @@ class OrderController extends AbstractActionController
         }
 
         return [
-            'isNewOrder' => $isNewOrder,
-            'order'      => $receiptData,
-            'order_id'   => $this->params()->fromRoute('id'),
-            'user'       => $this->zfcUserAuthentication()->getIdentity(),
+            'isNewOrder'  => $isNewOrder,
+            'order'       => $receiptData,
+            'orderEntity' => $order,
+            'order_id'    => $this->params()->fromRoute('id'),
+            'user'        => $user,
         ];
     }
 
