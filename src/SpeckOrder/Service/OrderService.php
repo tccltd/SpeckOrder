@@ -125,6 +125,19 @@ class OrderService implements
             'meta'        => $line->getMeta(),
         ];
 
+        $results = $this->getEventManager()->trigger('additionalOrderReceiptInfo', $this, ['orderLine' => $line]);
+        $productDetails = [];
+
+        foreach($results as $additionalDetails) {
+            if($additionalDetails) {
+                foreach ($additionalDetails as $detailName => $value) {
+                    $productDetails[$detailName] = $value;
+                }
+            }
+        }
+
+        $item['product-details'] = $productDetails;
+
         $children = [];
         foreach($line as $childLine) {
             $children[] = $this->getReceiptDataFromLine($childLine);
