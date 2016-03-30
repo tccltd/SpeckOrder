@@ -3,7 +3,6 @@
 namespace SpeckOrder\Mapper;
 
 use SpeckOrder\Entity\OrderLineInterface;
-use SpeckOrder\Service\OrderInterface;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
