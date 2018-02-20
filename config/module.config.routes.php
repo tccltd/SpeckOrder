@@ -38,8 +38,18 @@ return [
                         'options' => [
                             'route'    => '/manage-orders',
                             'defaults' => [
-                                'controller' => 'order_management',
+                                'controller' => 'speckorder_orderManagementController',
                                 'action'     => 'index',
+                            ],
+                        ],
+                    ],
+                    'export-orders' => [
+                        'type'    => 'Literal',
+                        'options' => [
+                            'route'    => '/export-orders',
+                            'defaults' => [
+                                'controller' => 'speckorder_orderManagementController',
+                                'action'     => 'export',
                             ],
                         ],
                     ],

@@ -12,6 +12,11 @@ class OrderManagementController extends AbstractActionController
     protected $orderService;
     protected $eventManager;
 
+    public function __construct($orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     public function initSubLayout()
     {
         $this->subLayout('/layout/speck-order');
@@ -29,6 +34,77 @@ class OrderManagementController extends AbstractActionController
             ),
         );
         return new ViewModel($data);
+    }
+
+    public function exportAction()
+    {
+        // Retrieve all orders.
+        $orders = $this->getOrderService()->getOrderMapper()->fetchAll();
+
+        // Retrieve course delegates and track any errors.
+        $delegates = [];
+        $errors = [];
+
+        // Loop through all orders to extract delegates.
+        $lastOrderId = -1;
+        do {
+            // Hydrate the next order; catch and log exceptions.
+            try {
+                $order = $orders->current();
+            } catch (\Exception $e) {
+                // Track error and advance to the next order.
+                $errors[] = 'ERROR: Failed unserializing meta for Order after ' .$lastOrderId . '.';
+                continue;
+            } finally {
+                // Advance the order pointer, ready for the next iteration.
+                $orders->next();
+            }
+
+            // Log the last order id, used only to identify when a following order cannot be hydrated.
+            $lastOrderId = $order->getId();
+
+            // Populate order lines; catch and log exceptions.
+            try {
+                $order->setItems(ArrayUtils::iteratorToArray(
+                    $this->getOrderService()->getOrderLineMapper()->fetchAllByOrderId($order->getId()),
+                    false
+                ));
+            } catch (\Exception $e) {
+                $errors[] = 'ERROR: ' . $e->getMessage();
+            }
+
+            // Extract delegates from order lines.
+            foreach ($order as $line) {
+                $meta = $line->getMeta();
+                $additionalMeta = $meta->getAdditionalMeta();
+
+                // If no metadata is populated, skip this order line.
+                if (!$meta) continue;
+
+                foreach ($meta['delegates'] as $delegate) {
+                    $delegates[] = [
+                        'websiteOrderId'    => $order->getId(),
+                        'websiteOrderTime'  => date_format($order->getCreated(), 'Y-m-d H:i:s'),
+                        'itemNumber'        => $meta['itemNumber'],
+                        'date'              => isset($additionalMeta['course']) &&
+                            $additionalMeta['course'] instanceof \TccCourseCart\Entity\OrderLineCourseMeta ?
+                                date_format($additionalMeta['course']->getDate(), 'Y-m-d') : '',
+                        'location'          => isset($additionalMeta['course']) &&
+                            $additionalMeta['course'] instanceof \TccCourseCart\Entity\OrderLineCourseMeta ?
+                                $additionalMeta['course']->getLocation() : '',
+                        'firstName'         => $delegate['firstName'],
+                        'lastName'          => $delegate['lastName'],
+                        'email'             => $delegate['email'],
+                    ];
+                }
+            }
+        } while ($orders->valid());
+
+        $viewModel = new ViewModel([
+            'lines' => $delegates
+        ]);
+        $viewModel->setTerminal(true);
+        return $viewModel;
     }
 
     public function invoice()
@@ -234,23 +310,10 @@ address;
     }
 
     /**
-     * @return orderService
+     * @return \SpeckOrder\Service\OrderService
      */
     public function getOrderService()
     {
-        if (null === $this->orderService()) {
-            $this->orderService = $this->getServiceLocator()->get('\SpeckOrder\Service\Order');
-        }
         return $this->orderService;
-    }
-
-    /**
-     * @param $orderService
-     * @return self
-     */
-    public function setOrderService($orderService)
-    {
-        $this->orderService = $orderService;
-        return $this;
     }
 }

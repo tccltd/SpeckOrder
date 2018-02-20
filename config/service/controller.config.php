@@ -9,6 +9,7 @@
  */
 
 use SpeckOrder\Controller\OrderController;
+use SpeckOrder\Controller\OrderManagementController;
 
 return array(
     'factories' => array(
@@ -16,6 +17,12 @@ return array(
             $sm = $cm->getServiceLocator();
             return new OrderController(
                 $sm->get('speckcheckoutorder_checkoutService'),
+                $sm->get('speckorder_orderService')
+            );
+        },
+        'speckorder_orderManagementController' => function ($cm) {
+            $sm = $cm->getServiceLocator();
+            return new OrderManagementController(
                 $sm->get('speckorder_orderService')
             );
         },

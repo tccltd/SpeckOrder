@@ -45,6 +45,12 @@ $config = array(
             'manage-orders' => array(
                 'label' => 'Orders',
                 'route' => 'zfcadmin/manage-orders',
+                'pages' => array(
+                    'export-orders' => array(
+                        'label' => 'Export',
+                        'route' => 'zfcadmin/export-orders'
+                    )
+                )
             ),
             'manage-customers' => array(
                 'label' => 'Customers',

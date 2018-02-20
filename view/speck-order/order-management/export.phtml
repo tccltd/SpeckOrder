@@ -1,0 +1,5 @@
+<pre>
+order_id,order_time,item_number,date,location,first_name,last_name,email
+<?php foreach ($lines as $line): ?>
+<?php echo implode(',', $line) . PHP_EOL; ?>
+<?php endforeach; ?>

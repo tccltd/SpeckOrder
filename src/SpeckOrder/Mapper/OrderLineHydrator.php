@@ -3,6 +3,7 @@
 namespace SpeckOrder\Mapper;
 
 use SpeckOrder\Entity\OrderLineInterface;
+use SpeckOrder\Exception\RuntimeException;
 
 class OrderLineHydrator
 {
@@ -39,8 +40,17 @@ class OrderLineHydrator
             ->setQuantityInvoiced($data['quantity_invoiced'])
             ->setQuantityRefunded($data['quantity_refunded'])
             ->setQuantityShipped($data['quantity_shipped'])
-            ->setInvoiceable($data['is_invoiceable'] == 0 ? false : true)
-            ->setMeta(unserialize($data['meta']));
+            ->setInvoiceable($data['is_invoiceable'] == 0 ? false : true);
+
+        // Unserialize metadata. If this fails, throw an exception.
+        if (!($meta = unserialize($data['meta']))) {
+            throw new RuntimeException(
+                'Failed unserializing meta for OrderLine ' . $data['id'] . ', Order ' . $data['order_id'] . '.'
+            );
+        };
+
+        // Set the unserialized metadata in the OrderLine.
+        $object->setMeta($meta);
 
         return $object;
     }

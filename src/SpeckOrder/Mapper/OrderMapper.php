@@ -41,4 +41,12 @@ class OrderMapper extends AbstractDbMapper implements OrderInterface
         $resultSet = $this->select($select->where($where));
         return $resultSet->current();
     }
+
+    public function fetchAll()
+    {
+        $select = $this->getSelect();
+
+        $resultSet = $this->select($select);
+        return $resultSet;
+    }
 }
