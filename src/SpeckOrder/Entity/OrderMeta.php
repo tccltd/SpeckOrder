@@ -5,9 +5,10 @@ namespace SpeckOrder\Entity;
 class OrderMeta implements OrderMetaInterface, \ArrayAccess
 {
     static protected $arrayProperties = [
-	   'customer' => true,
-	   'billing'  => true,
-	   'payment'  => true,
+        'customer' => true,
+        'billing'  => true,
+	    'payment'  => true,
+        'consent'  => true,
     ];
 
     protected $customer = [];
@@ -15,6 +16,7 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
 	   'title' => null,
     ];
     protected $payment = [];
+    protected $consent = [];
 
     public function __construct(array $config = array())
     {
@@ -188,6 +190,39 @@ class OrderMeta implements OrderMetaInterface, \ArrayAccess
     {
         $this->payment['method'] = $paymentMethod;
 
+        return $this;
+    }
+
+    public function getConsentCommunication()
+    {
+        return $this->consent['communication'];
+    }
+
+    public function setConsentCommunication($consentCommunication)
+    {
+        $this->consent['communication'] = $consentCommunication;
+        return $this;
+    }
+
+    public function getConsentTerms()
+    {
+        return $this->consent['terms'];
+    }
+
+    public function setConsentTerms($consentTerms)
+    {
+        $this->consent['terms'] = $consentTerms;
+        return $this;
+    }
+
+    public function getConsentIpAddress()
+    {
+        return $this->consent['terms'];
+    }
+
+    public function setConsentIpAddress($consentIpAddress)
+    {
+        $this->consent['ipAddress'] = $consentIpAddress;
         return $this;
     }
 
